@@ -1,0 +1,20 @@
+Package: osfibo
+Title: OSFIBO
+Version: 1.0.0.1
+Authors@R: person("Herson", "Soares", , "hersonhebert@hotmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: The package receive one PDB file or your name so that if the user 
+      informs that online is true, will be realized the download of PDB file. 
+      After, will be calculatede the occluded areas and returned for the user.
+Depends: R (>= 3.3.0)
+License: GPL-3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Imports: 
+    bio3d,
+    dplyr,
+    readr,
+    stringr,
+    tidyr
+
