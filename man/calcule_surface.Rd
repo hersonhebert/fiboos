@@ -4,19 +4,29 @@
 \alias{calcule_surface}
 \title{Calcule the Surface}
 \usage{
-calcule_surface(path_pdb, online)
+calcule_surface(path_pdb, online, method)
 }
 \arguments{
 \item{path_pdb}{Path or name of PDB File}
 
-\item{online}{Field to define if the file will be otain in a online way.}
+\item{online}{Logical parameter that defines whether to download or locally load the PDB file.}
+
+\item{method}{Method to be used - 1: OS ; 2: FIBOOS}
 }
 \description{
-This function, implements and execute all functions essentials
-to run the OSFIBO code. One can reorganize the PDB file, to generate datas
-about contacts of proteins and theirs areas of contact. The return of function is
-a group of informations that contains all areas and contacts.
+The calculation of occluded surface areas is essential for
+understanding the possibility of an enzyme passing between atoms
+of a protein. To perform the calculation, it is considered that
+a surface is occluded based on tests with a probe, which is
+typically the water molecule.
+}
+\seealso{
+\code{\link[=read_prot]{read_prot()}}
 }
 \author{
-Herson Hebert
+Carlos Henrique da Silveira
+
+Herson Hebert Mendes Soares
+
+João Paulo Roquim Romanelli
 }

@@ -1,30 +1,36 @@
 #' @title Calcule the Surface
 #' @name calcule_surface
 #'
-#' @description This function, implements and execute all functions essentials
-#' to run the OSFIBO code. One can reorganize the PDB file, to generate datas
-#' about contacts of proteins and theirs areas of contact. The return of function is
-#' a group of informations that contains all areas and contacts.
+#' @description The calculation of occluded surface areas is essential for
+#'              understanding the possibility of an enzyme passing between atoms
+#'              of a protein. To perform the calculation, it is considered that
+#'              a surface is occluded based on tests with a probe, which is
+#'              typically the water molecule.
 #'
 #' @param path_pdb Path or name of PDB File
-#' @param online Field to define if the file will be otain in a online way.
+#' @param online Logical parameter that defines whether to download or locally load the PDB file.
+#' @param method Method to be used - 1: OS ; 2: FIBOOS
 #'
-#' @author Herson Hebert
+#' @seealso [read_prot()]
+#'
+#' @author Carlos Henrique da Silveira
+#' @author Herson Hebert Mendes Soares
+#' @author João Paulo Roquim Romanelli
 #'
 #' @export
-calcule_surface = function(path_pdb, online){
+calcule_surface = function(path_pdb, online, method){
   if(file.exists("prot.srf")){
     file.remove("prot.srf")
   }
   if(file.exists("temp.pdb")){
     file.remove("temp.pdb")
   }
-  path = system.file("extdata", "radii", package = "osfibo")
+  path = system.file("extdata", "radii", package = "fiboos")
   file.copy(from = path, to = getwd())
   interval = clean_pdb(path_pdb, online)
   iresf = interval[1]
   iresl = interval[2]
-  execute_os(iresf, iresl)
+  execute(iresf, iresl, method)
   remove_files()
 }
 
@@ -38,6 +44,5 @@ remove_files = function(){
   file.remove("file.srf")
   file.remove("fort.6")
   file.remove("part_i.pdb", "part_v.pdb")
-  file.remove("radii")
 }
 

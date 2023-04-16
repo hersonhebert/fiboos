@@ -1,9 +1,24 @@
-#' @title Reading Values of Occluded Surface Area.
+#' @title Prot Reading
 #' @name read_prot
 #'
-#' @description It's a important function to load calculated values to use of user.
+#' @description It is crucial to read and manipulate the data of the occluded
+#'              surfaces that were calculated. Through the results, it is
+#'              possible to draw important conclusions and perform studies on
+#'              specific proteins and their behavior at the atomic level.
 #'
-#' @author Herson Hebert
+#' @param prot Path or name of prot file.
+#'
+#' @details The function allows reading a prot file, which contains data
+#'          calculated using the OS or FIBOOS methodology. The input parameter
+#'          is the name of the file "prot.srf" or the directory path where it is
+#'          located."
+#'
+#' @seealso [calcule_surface()]
+#'
+#' @author Carlos Henrique da Silveira
+#' @author Herson Hebert Mendes Soares
+#' @author João Paulo Roquim Romanelli
+#'
 #'
 #' @importFrom readr read_fwf
 #' @importFrom dplyr filter
@@ -12,8 +27,9 @@
 #' @importFrom tidyr separate
 #'
 #' @export
-read_prot = function(){
-  dado = read_fwf("prot.srf")
+
+read_prot = function(prot){
+  dado = read_fwf(prot)
   dado = filter(dado, X1 == "INF")
   dado$X7 = NULL
   dado = rename(dado, INF = X1, ATOM = X2, NUMBER_POINTS = X3, AREA = X4, RAYLENGTH = X5, DISTANCE = X6)

@@ -14,7 +14,7 @@ c f77
 
 c:sims-main
 c	
-        subroutine runSIMS 
+        subroutine runSIMS (method)
 
         include "surf-sims.h"
 	include "input_sims.h"
@@ -25,6 +25,7 @@ c
         integer dot_IATNUM(maxdot),dot_ISHAPE(maxdot)
 	integer smdotn_at(maxatm),smdotstartn_at(maxatm) 
         integer  ndots
+        integer method
         real*8 d_probe,dotden
 	character*8 hour
 	character*9 day 
@@ -147,7 +148,7 @@ c       end if
            natoml_pr=0
            natoml_het=0
            k=0
-c read xyz Leitura das coordenadas
+c read xyz
           rewind kanalxyz
 
            do i=1,maxatm
@@ -245,7 +246,12 @@ c assign Rad
              
            
 c do SIMS calculation:
-              dotden_h=5.0
+              IF(method .eq. 1)then
+                dotden_h=5.0
+              END IF
+              IF(method .eq. 2)then
+                dotden_h=4.0
+              END IF
               dotden=dotden_h
               rp_rpr=1.4
               d_probe=rp_rpr*2.0d0
@@ -256,7 +262,7 @@ c do SIMS calculation:
      &                 natoml,d_probe,dotden,
      &                 dotcrd,dotnrm,dotarea,
      &                 dot_IATNUM,dot_ISHAPE,ndots,
-     &                 smdotn_at,smdotstartn_at)
+     &                 smdotn_at,smdotstartn_at, method)
 
 
         if(outdetl.ge.0)then
@@ -292,7 +298,7 @@ c.  Double precission input/output  arguments
      &                 natoms,d_probe,dotden,
      &                 dotcrd,dotnrm,dotarea,
      &                 dot_IATNUM,dot_ISHAPE,ndots,
-     &                 dot_num_atom,dot_startn_atom)
+     &                 dot_num_atom,dot_startn_atom, method)
 
 c INPUT:
 c       coords(3,*) coord of atoms
@@ -323,6 +329,7 @@ c
 
         character*3 atnamel(*),resnamel(*)
         integer resnumbl(*)
+        integer method
 	integer natoms,ndots
         integer*4 dot_IATNUM(maxdot),dot_ISHAPE(maxdot)
 
@@ -402,7 +409,7 @@ C
         integer*2 LKNBR(maxnbr)
         integer*2 ITNL(maxnbr)
         real*8 UP(3,maxsph),TETP(maxsph)  !dots_xyz on Probe, teta 
-        real*8 UA(3,maxsph)       ! parent= children 1
+        real*8 UA(3,maxchil,maxsph)       ! parent= children 1 
 	real*8 dotchild(3,maxchil)        ! Coord of Children dots 
 	real*8 dotchildr(3,maxchil)       ! Rotated Coord of Children dots 
 	logical dotchsf(maxchil)          ! status flag of Children dots 
@@ -659,7 +666,7 @@ C . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .
 	 dotcc01_run=.false.        !98sep01
 	 OPT_CCdot_ProbProj = .not.OPT_CCdot_TriDiv
 	 OPT_triTetMx = 0.00d0 !0.375d0 !0.25d0 ! maxArc fraction of 2Pi 
-         OPT_triTetMx = dcos(PI2*OPT_triTetMx)*RP**2 !CALCULO
+         OPT_triTetMx = dcos(PI2*OPT_triTetMx)*RP**2
 
 	 OPT_sccdenK = 1.0d0
 	 OPT_sccdens = .false.  ! saddle and cc have specified dens
@@ -804,7 +811,7 @@ c    &  'SIMS: SmoothingProbRad',rad_sm, 'SIMS: DotDens  per A^2',dotden
         if(radMAX.lt.rad(n))radMAX=rad(n)
         end do
 
-        WIDTH = 2 * (radMAX + RP) !Porque 2x o raio MAXIMO + probe??
+        WIDTH = 2 * (radMAX + RP)
         do k = 1,3
            NIAS(k) = 0
            COMIN(K) = big
@@ -817,7 +824,7 @@ c    &  'SIMS: SmoothingProbRad',rad_sm, 'SIMS: DotDens  per A^2',dotden
         atom_srf(N)=0.0d0
 	do K=1,3
 	CO(K,N)=coords(K,N)
-	centerm(k)=centerm(k)+coords(K,N) !centraliza nas coordenadas
+	centerm(k)=centerm(k)+coords(K,N)
 	enddo !K
 
         do K = 1,3
@@ -827,7 +834,7 @@ c    &  'SIMS: SmoothingProbRad',rad_sm, 'SIMS: DotDens  per A^2',dotden
         end do !N
        
         do k=1,3
-	centerm(k)=centerm(k)/natoms !Porque?
+	centerm(k)=centerm(k)/natoms
 	end do! k
 
 C     SET UP CUBE ARRAYS
@@ -852,7 +859,7 @@ C     FIRST THE integer COORDINATE ARRAYS
         end if
 
               IF (ICO(K,I) .GT. MAXCUB)
-     1         STOP 'CUBE COORDINATE TOO LARGE' !??
+     1         STOP 'CUBE COORDINATE TOO LARGE'
 
          end do !K
          end do !I
@@ -1006,7 +1013,7 @@ C INITIALIZE SOME REENTRANT SURFACE TO FALSE FOR EACH ATOM
 C ...................................................................
 
 
-	NUP = (4.0d0*PI2*RP**2 )*densSCC !O QUE É O NUP
+	NUP = (4.0d0*PI2*RP**2 )*densSCC
 
         IF (NUP .GT. maxsph) NUP = maxsph
         IF (NUP .LT. 12) NUP = 12       
@@ -1047,12 +1054,12 @@ C SKIP IATOM IF ITS CUBE AND ADJOINING CUBES CONTAIN ONLY BLOCKERS
 
 C TRANSFER VALUES FROM LARGE ARRAYS TO IATOM VARIABLES
 
-           RI = rad(IATOM)!RI avaliado
+           RI = rad(IATOM)
 
            SI = IAS(IATOM) .EQ. 2
 
            DO  K = 1,3
-              CI(K) = CO(K,IATOM)!CENTRANDO NAS COORDENADAS ORIGINAIS
+              CI(K) = CO(K,IATOM)
            end do !K
 
            IMOL = MOLNUM(IATOM)
@@ -1072,7 +1079,7 @@ C INITIALIZE SRN = 2 FOR SOME NEIGHBOR TO FALSE
 
 C SAVE A LITTLE TIME FOR DISTANCE CHECK
 
-           SUMI = two * RP + RI!DISTANCIA A SER CHECADA COM A PONTA DE PROVA
+           SUMI = two * RP + RI
 
 C CHECK IATOM CUBE AND ADJACENT CUBES FOR NEIGHBORING ATOMS
 
@@ -2488,33 +2495,27 @@ C - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	  end if
 
-	NUV = (4.0d0*PI2*RI**2 )*dotden    !D O QUE É?
-C        NUV = 255
+	NUV = (4.0d0*PI2*RI**2 )*dotden    !D
+
         IF (NUV .GT. maxsph) NUV = maxsph
         IF (NUV .LT. 12) NUV = 12          !minimal number of points
-
-       	CALL GENUN02(RI,UA,ARUA,NUV) !
+        IF (method .EQ. 1)then
+       	    CALL GENUN02(RI,UA,ARUA,NCHIUA,NUV,NCHmx) !
+        END IF
+        IF (method .EQ. 2)then
+            CALL GENUN03(RI,UA,ARUA,NUV)
+        END IF
 
            AREA = (four*PI2 * RI ** 2) / dfloat(NUV)
 
-	   sizeDot = dsqrt(AREA)!tamanho dos dots
+	   sizeDot = dsqrt(AREA)
 	   sizeDot4 = 0.75d0*sizeDot  !3/4 of linear size of the dot
 	   range_cx = one
 	   RI2 = RI**2
 
-	   do I=1,NUV
+	   do I=1,NUV 
 	   dot_aw(I)=one
 	   end do!I
-       open(unit=kanalz,file="dotCO.ms",status='unknown') !esc
-	   do I=1,NUV
-       dot_aw(I)=ARUA(I)
-       do k=1,3
-       dotCO(k,I)=UA(k,I)
-       end do!K
-       write(kanalz,'(i5,5f8.3)')I,dotCO(1,I),dotCO(2,I),dotCO(3,I)
-       end do!I
-       close(kanalz)
-
 
            IB = 0
 
@@ -2534,14 +2535,18 @@ C        NUV = 255
 	   write(kanalpl,*)'CONVEX LOOP: atom',IATOM,' HAS no torus'
 	   end if
 
-	   do I=1,NUV
-	   dot_aw(I)=ARUA(I)
+       open(unit = kanalz, file = 'dotCO.txt', status = 'unknown')
+
+	   do I=1,NUV 
+	   dot_aw(I)=ARUA(I)        
 	   do k=1,3
-c	   dotCO(k,I)=UA(I,k)
+	   dotCO(k,I)=UA(k,1,I)
+       write(kanalz,'(i5,5f8.3)')i,dotCO(k,I)
 	   end do!k
 	   end do!I
 	   end if ! NO torus
-
+       close(kanalz)
+	   
            if(ntor_i(IATOM).ge.1)then
 
 	   if(MAXntor_i.lt.ntor_i(IATOM))MAXntor_i=ntor_i(IATOM)
@@ -2572,13 +2577,13 @@ c	   dotCO(k,I)=UA(I,k)
 
 	   call VNORM(VIJ,UIJ)
 
-	   if(ntor_i(IATOM).eq.1)then
+	   if(ntor_i(IATOM).eq.1)then  
 
 	   call VPERP(UIJ,Q)
 	   frame_cx=1
 	   end if !one
 
-	   if(ntor_i(IATOM).ge.2)then
+	   if(ntor_i(IATOM).ge.2)then  
 
 	   KATOM=Jattor_i(2,IATOM)
 	   do k=1,3
@@ -2605,7 +2610,7 @@ c cheak linearity
 	   do k=1,3
 	   VIJ(k)=VIJ(k) - aa1*UIJ(k)
 	   end do!k
-	   call VNORM(VIJ,Q)
+	   call VNORM(VIJ,Q)   
 	   frame_cx=3
 
 	   else                       ! no 3 neighbor
@@ -2644,22 +2649,22 @@ c cheak linearity
 	   end if
 c
 c
-	   do I=1,NUV
+	   do I=1,NUV 
 	   dot_aw(I)=one
 
            do k=1,3
-c	   dotCO(k,I)=null
+	   dotCO(k,I)=null
 	   end do
 
 	   do k2=1,3
 	   do k1=1,3
-c	   dotCO(k1,I)=dotCO(k1,I) + G(k1,k2)*UA(k2,I)
+	   dotCO(k1,I)=dotCO(k1,I) + G(k1,k2)*UA(k2,1,I)
 	   end do!k1
 	   end do!k2
 
 	   if(OPT_printcx.ge.iiprint1)then
 	   write(kanalpl,'(a22,i4,1x,3f8.4)')
-     &	   'initial I, dotCO=',I,(UA(k,I),k=1,3)
+     &	   'initial I, dotCO=',I,(UA(k,1,I),k=1,3)
 	   write(kanalpl,'(a22,i4,1x,3f8.4)')
      &	   'Rotated I, dotCO=',I,(dotCO(k,I),k=1,3)
            end if!print
@@ -2679,11 +2684,11 @@ c	   dotCO(k1,I)=dotCO(k1,I) + G(k1,k2)*UA(k2,I)
            sizeDot4 = 0.50d0*sizeDot !sep9801:
 
 	   do ich=1,NCHmx
-	   dotchsf(ich)=.true.     !dot exist  flag for refcut05
+	   dotchsf(ich)=.true.     !dot exist  flag for refcut05 
 	   dotchrf(ich)=.false.    !dot rotate flag for refcut05
 
 	   do k=1,3
-	   dotchild(k,ich)=UA(k,I)    !children dots coord in Loc system
+	   dotchild(k,ich)=UA(k,ich,I)    !children dots coord in Loc system
 	   dotchildr(k,ich)=null          !initialization rotated
 	   end do !k
 	   end do !ich
@@ -2711,7 +2716,7 @@ c	   dotCO(k1,I)=dotCO(k1,I) + G(k1,k2)*UA(k2,I)
 	   end do
 
        dotvUIJ = aa1
-
+	    
 
 	   if(OPT_sizeBE.eq.0)then
 	   if(dotvUIJ.gt.Dstor_i(it,IATOM) - toler_d)then
@@ -2720,11 +2725,11 @@ c	   dotCO(k1,I)=dotCO(k1,I) + G(k1,k2)*UA(k2,I)
 	   write(kanalpl,*)'DOT removed '
 	   end if
 
-	   goto 5320
+	   goto 5320           
 	   end if
            end if!OPT_sizeBE eq 0
 
-	   if(OPT_sizeBE.eq.1)then   ! OK
+	   if(OPT_sizeBE.eq.1)then   ! OK 
 	   aa2 = one-(Dstor_i(it,IATOM)/RI)**2    ! sin(tet)**2
 	   if(aa2.lt.null)aa2=null
 	   sintet = dsqrt(aa2)                       ! sin(tet)
@@ -2736,7 +2741,7 @@ c	   dotCO(k1,I)=dotCO(k1,I) + G(k1,k2)*UA(k2,I)
 	   delta(it)=null
 	   end if
 
-	   if(delta(it) .ge. range_cx)then
+	   if(delta(it) .ge. range_cx)then  
 	   dot_aw(I)=null
            if(OPT_printcx.ge.iiprint1)then
            write(kanalpl,*)'CUT: it:',it,' dot ',I, ' is deleted**!!'
@@ -2744,7 +2749,7 @@ c	   dotCO(k1,I)=dotCO(k1,I) + G(k1,k2)*UA(k2,I)
 	   goto 5320                        ! next dot I
 	   end if ! ge. range_cx
 
-	   if(delta(it) .le. - range_cx)then
+	   if(delta(it) .le. - range_cx)then 
            if(OPT_printcx.ge.iiprint1)then
            write(kanalpl,*)'CUT it:',it,' dot ',I, ' is accepted*!!'
 	   end if
@@ -2776,7 +2781,7 @@ ctt
 
 5325       continue    
 
-	   do I=1,NUV
+	   do I=1,NUV 
 	   dot_aw(I)=dot_aw(I)*ARUA(I)
 	   end do!I
 
@@ -2801,15 +2806,16 @@ ctt
             end if
 
 
-              AREAC = AREAC + dot_aw(I) !Area total de contato - soma de cada dot
+              AREAC = AREAC + dot_aw(I) 
 
               do K = 1,3
-	          dotcrd(K,idot_g) = CI(K) + dotCO(K,I)!raydist verificar sobre possibilidade de posicionamento.
-              dotnrm(K,idot_g) = dotCO(K,I)/RI!possivel definição dos dots
+	          dotcrd(K,idot_g) = CI(K) + dotCO(K,I)
+              dotnrm(K,idot_g) = dotCO(K,I)/RI
               end do
-          dot_IATNUM(idot_g)=IATOM
+
+	      dot_IATNUM(idot_g)=IATOM    
 	      dot_ISHAPE(idot_g)=ISHAPE
-	      dotarea(idot_g)=dot_aw(I)!Area dos dots?
+	      dotarea(idot_g)=dot_aw(I)
 
 5600         end do ! I->NUV
 
@@ -2931,16 +2937,16 @@ C * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
        do id = 1,ndots
        if(.not.WDYONrm(id))then
-       surf0=surf0 + dotarea(id)!superfície?
+       surf0=surf0 + dotarea(id)
        do k=1,3
-        VECTOR(k)=VECTOR(k) + dotcrd(k,id)*dotarea(id) !Comparar com BARS
+        VECTOR(k)=VECTOR(k) + dotcrd(k,id)*dotarea(id)
        end do !k
        end if !not.WDYONrm
        end do !id
 
         if(surf0.gt.0.0d0)then
-        do k=1,3!Vector é quem é salvo com as coordenadas
-        VECTOR(k)=VECTOR(k)/surf0 !O que parece que diferencia para o BARS é essa "normalização"
+        do k=1,3
+        VECTOR(k)=VECTOR(k)/surf0
         end do!k
         end if
 
@@ -2949,7 +2955,7 @@ C * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
        if(.not.WDYONrm(id))then
         aa1=0.0d0
         do k=1,3
-         aa1=aa1 + (dotcrd(k,id)-VECTOR(k))*dotnrm(k,id)!verificar aa1
+         aa1=aa1 + (dotcrd(k,id)-VECTOR(k))*dotnrm(k,id)
         end do!k
         volume=volume + aa1*dotarea(id)
 	end if !not.WDYONrm
@@ -3083,7 +3089,7 @@ cwrite(kanalz,'(a34)')'#SIMS: RESULT DOTS in Midas format'
         
         do id=dot_startn_atom(i),dot_startn_atom(i)+dot_num_atom(i)-1    
         write(kanalz,'(a3,i5,2x,a3,f8.3,1x,f8.3,1x,f8.3,1x,
-     &     a2,i1, 1x,f7.5,1x,f6.3,1x,f6.3,1x,f6.3)')
+     &     a2,i1, 1x,f6.3,1x,f6.3,1x,f6.3,1x,f6.3)')
      &  resnamel(i),resnumbl(i),atnamel(i),(dotcrd(k,id),k=1,3),
      &  'ST',dot_ISHAPE(id), dotarea(id),(dotnrm(k,id),k=1,3)
 
@@ -3094,8 +3100,8 @@ cwrite(kanalz,'(a34)')'#SIMS: RESULT DOTS in Midas format'
         end do!k1
         if(abs(1.0d0-aa1).ge.0.0001)then
         normbad=normbad+1
-C        write(kanalz,'(a25,f8.5,a6,i6)')
-C     &   'WARNING: BAD NORM: norm:',aa1,' nbad:',normbad
+        write(kanalz,'(a25,f8.5,a6,i6)')
+     &   'WARNING: BAD NORM: norm:',aa1,' nbad:',normbad 
 	 end if
 
         end do !id
@@ -3422,7 +3428,7 @@ c f77
         return
         end
 
-         real*8 FUNCTION DOT(A,B) !CALCULO DO DOT
+         real*8 FUNCTION DOT(A,B)
 
         implicit none
         REAL*8 A(3)
@@ -3848,7 +3854,7 @@ c
 
 	implicit none
 
-	integer N
+	integer N, kanalz
 	real*8 RI
         REAL*8 U(3,*)
 	real*8 AR(*),TET(*)
@@ -3859,15 +3865,12 @@ c
 	real*8 aat,aaf,RI2
 	real*8 area
 	real*8 dtet,dtet2,sdtet,cdtet
-	real*8 OPT_nhorkk, TESTE
+	real*8 OPT_nhorkk
 
 	integer NEQUAT,NVERT,I,NHOR,J,NU
 	integer Nlarg
 	integer NHORmin
 	logical CONTROL
-	character*16 filename
-	integer kanalz
-
 
        real*8 PI2,null,onehalf,one,two,three,four,big,small
        common/CONSTANTI/PI2,null,onehalf,one,two,three,four,big,small
@@ -3884,7 +3887,7 @@ c
 	RI2 = RI*RI
 
 	area = null 
-        NEQUAT = DSQRT(dfloat(N ) * PI)!N = 1000 p/ fibonacci
+        NEQUAT = DSQRT(dfloat(N ) * PI)
         NVERT = onehalf * NEQUAT
 	dNVERT=dfloat(NVERT)
 
@@ -3898,7 +3901,7 @@ c
 
         NU = 0
 
-	dtet = PI/dNVERT!calculo dots
+	dtet = PI/dNVERT
 	dtet2= dtet*onehalf
 	sdtet =two* dsin(dtet2)
 	cdtet = dcos(dtet2)
@@ -3906,7 +3909,7 @@ c
         DO 100 I = 0,NVERT
 
 	   FI = dtet*I
-           Z = RI*DCOS(FI)!onde está fixado a probe?
+           Z = RI*DCOS(FI)
            XY = DSIN(FI)
            
 	   if(I.eq.0.or.I.eq.NVERT)then
@@ -3946,25 +3949,24 @@ c
               U(3,NU) = Z
 	      AR(NU) = aaf*aat*RI2
 	      TET(NU) = FI
-	      area=area + AR(NU) !cálculo da área de contato?
+	      area=area + AR(NU)
 
 50      CONTINUE
 100     CONTINUE
 150     CONTINUE
 
         N = NU
-        aaf = 4.0d0*PI*RI2/area !AAF?
 
-        filename = 'teste.ms'
-
-        open(unit=kanalz,file=filename,status='unknown')
-
+        aaf = 4.0d0*PI*RI2/area
+        open(unit = kanalz, file = 'teste.txt', status = 'unknown')
         do i=1,NU
-        AR(i) = aaf*AR(i)
+C        AR(i) = aaf*AR(i)
 C        TESTE = TESTE+AR(i)
-        write(kanalz,'(i3,3f8.3)')i,U(1,i),U(2,i),U(3,i)
+        write(kanalz,'(i5,5f8.3)')i,U(1,i),U(2,i),U(3,i),AR(i),TET(i)
         end do
         close(kanalz)
+
+
 	if(CONTROL)then
 	write(*,'(a12,i5,a12,f16.14)')
      &	'GENUN01:N =',NU,' area norm=',aaf
@@ -3973,84 +3975,332 @@ C        TESTE = TESTE+AR(i)
 	write(*,'(i5,5f8.3)')i,U(1,i),U(2,i),U(3,i),AR(i),TET(i)
 	enddo
 	endif
+
+	do i=1,NU
+	AR(i) = aaf*AR(i)
+	end do
+
         RETURN
         END
 c
-        SUBROUTINE GENUN02(RI,U,AR,N)
+        SUBROUTINE GENUN02(RI,U,AR,NCHI,N,NC)
 
 	implicit none
-	integer N
+	integer N,NC, kanalz
 
-	REAL*8 RI, valor, goldenratio, ang
-        REAL*8 U(3,N)
+	REAL*8 RI           
+        REAL*8 U(3,NC,N)  
 	real*8 AR(N)
-	real pi
-C	integer NCHI(N)
+	integer NCHI(N)
 
-       parameter (pi = 3.1415927)
-       real i(N)
-       real z(N)
-       real theta(N)
-       real phi(N)
-       real out(3,N)
-       logical out_xyz
-       integer k
-       real phi_1, phi_2
-       real area_dot
-       integer kanalz
+	real*8 PI,FI,FJ,Z,XY,X,Y
+	real*8 twoPI
+	real*8 dNHOR,dNVERT
+	real*8 aat,aaf
+	real*8 area,RI2
+	real*8 dtet,dtet2,sdtet,cdtet
 
-       out_xyz = .true.
+       real*8 dfich9(9),dtetch9(9)   ! delta fi and delta tet for chilren dots 
+       real*8 dfich09(9),dtetch09(9)
+       real*8 dfich5(5),dtetch5(5)   ! delta fi and delta tet for chilren dots 
+       real*8 dfich05(5),dtetch05(5)
+       real*8 dfich(9),dtetch(9)    ! delta fi and delta tet for chilren dots 
+       real*8 dfich0(9),dtetch0(9)
+       real*8 chstep9,chstep5
+       integer ncloc
+       real*8 chstep,chsfi
+       real*8 chstet,chstet1,chstet2
+       real*8 aa,bb,tetch,fich
+       real*8 aafc
+
+       integer NEQUAT,NVERT,I,NHOR,J,NU
+       integer NHORmin
+       integer ich,ich1,k,k1,k2
+       integer print,iprint0,iprint1
+	
+	logical CONTROL
+
+       real*8 PI2,null,onehalf,one,two,three,four,big,small
+       common/CONSTANTI/PI2,null,onehalf,one,two,three,four,big,small
+c
+       data dfich9/0.0d0,1.0d0,0.0d0,-1.0d0,-1.0d0,-1.0d0,
+     &       0.0d0,1.0d0,1.0d0/
+
+       data dtetch9/0.0d0,-1.0d0,-1.0d0,-1.0d0,0.0d0,1.0d0,
+     & 1.0d0,1.0d0,0.0d0/
+
+       data dtetch09/0.0d0,1.0d0,1.0d0,1.0d0,1.0d0,1.0d0,
+     & 1.0d0,1.0d0,1.0d0/
+
+       data dfich09/0.0d0,0.0d0,1.0d0,2.0d0,3.0d0,4.0d0,5.0d0,
+     & 6.0d0,7.0d0/
+
+       data chstep9/0.33333d0/
+
+c
+       data dfich5/0.0d0,1.0d0,-1.0d0,-1.0d0,1.0d0/
+       data dtetch5/0.0d0,-1.0d0,-1.0d0,1.0d0,1.0d0/
+       data dtetch05/0.0d0,1.0d0,1.0d0,1.0d0,1.0d0/
+       data dfich05/0.0d0,1.0d0,3.0d0,5.0d0,7.0d0/
+       data chstep5/0.250d0/
        
-       area_dot = (4*pi*RI**2)/N
+       data NHORmin/3/
 
-       if(N<1) then
-        stop
-       end if
-       valor = 5
-       goldenratio = (1+sqrt(valor))/2
-       do 100 k = 1,N
-            i(k) = k - 0.5
-100       continue
-       do 101 k = 1,N
-            z(k) = 1-(2*i(k))/N
-101       continue
-        do 102 k = 1,N
+       iprint0 = 0 
+       iprint1 = 1
+       print  =  -1
+	
+       CONTROL = .false. 
+
+	if(print.ge.iprint0)then
+	write(*,*)'GENUN02 start:'
+	end if
+c
+c ASSIGN data
+c
+	ncloc = NC
+	if(NC.eq.9)then
+	do k=1,ncloc
+        dfich(k)=dfich9(k)
+	dtetch(k)=dtetch9(k)
+	dfich0(k)=dfich09(k)
+	dtetch0(k)=dtetch09(k)
+	end do !k
+	chstep = chstep9
+	end if! 9
+
+	if(NC.eq.5)then
+	do k=1,ncloc
+        dfich(k)=dfich5(k)
+	dtetch(k)=dtetch5(k)
+	dfich0(k)=dfich05(k)
+	dtetch0(k)=dtetch05(k)
+	end do !k
+	chstep = chstep5
+	end if! 5
+c
+	PI = PI2     ! 3.1415927d0
+        twoPI=two*PI
+	RI2 = RI**2
+
+	area = null 
+
+        NEQUAT = DSQRT(dfloat(N ) * PI)
+        NVERT = onehalf * NEQUAT
+        IF (NVERT .LT. 2) NVERT = 2
+
+        NU = 0
+
+	dNVERT=dfloat(NVERT)
+
+	dtet = PI/dNVERT
+	dtet2= dtet*onehalf
+	chstet1 = chstep*dtet
+	chstet2 = chstet1*two
+
+	sdtet =two* dsin(dtet2)
+	cdtet = dcos(dtet2)
+
+        DO 100 I = 0,NVERT
+
+	   FI = dtet*I
+
+           Z = RI*DCOS(FI)
+
+           XY = DSIN(FI)
+           
+	   if(I.eq.0.or.I.eq.NVERT)then !area of element
+	   aat=1.0d0 - cdtet
+	   else
+	   aat=XY*sdtet
+	   end if
+
+           NHOR = NEQUAT * XY
+
+           IF (NHOR .LT. NHORmin) NHOR = NHORmin
+	   if(I.eq.0.or.I.eq.NVERT) NHOR = 1
+
+	   dNHOR=dfloat(NHOR)
+
+	   aaf=twoPI/dNHOR
+
+	   if(NHOR.eq.1)then
+	   chsfi = twoPI*0.125d0 !Pole parent dot for 9 and 5 children
+	   chstet = dtet*0.66667d0
+           else
+	   chsfi = aaf*chstep
+	   chstet = chstet1
+	   end if
+        open(unit = kanalz, file = 'genun2.txt', status = 'unknown')
+       
+	   XY = XY*RI
+
+           DO 50 J = 0,NHOR-1
+
+              FJ = aaf*J
+
+              X = DCOS(FJ) * XY
+
+              Y = DSIN(FJ) * XY
+
+              IF (NU .GE. N)then
+	      write(*,*)'GENUN02:ERROR: sphera is not completed'
+	      GO TO 150
+	      end if
+
+              NU = NU + 1
+
+	      NCHI(NU) = 1    ! children dot number (parent = 1 children)
+
+              U(1,1,NU) = X
+
+              U(2,1,NU) = Y
+
+              U(3,1,NU) = Z
+                        write(kanalz,'(i5,5f10.3)')i,U(1,1,NU),U(2,1,NU),U(3,1,NU)
+
+	      AR(NU) = RI2*aaf*aat
+
+	      area = area + AR(NU)
+
+	      if(ncloc.ge.5)then  !4, 8 - child dots
+	      do ich = 2,ncloc        ! central child=1 = parent
+	      if(NHOR.eq.1)then ! Pole parent dot
+	      if(I.eq.0) tetch = FI + dtetch0(ich)*chstet       !N pole
+	      if(I.eq.NVERT) tetch = FI - dtetch0(ich)*chstet   !S pole
+
+	      fich  = dfich0(ich)*chsfi
+	      aa = RI*dsin(tetch)
+	      else  
+	      tetch = FI + dtetch(ich)*chstet
+              aa = RI*dsin(tetch)
+
+	      if(XY.gt.small)then
+	      aafc=aa/XY
+	      else
+	      aafc=one
+	      end if
+
+	      fich  = FJ + dfich(ich)*chsfi*aafc
+	      end if
+
+	      U(1,ich,NU)=aa*dcos(fich)
+	      U(2,ich,NU)=aa*dsin(fich)
+	      U(3,ich,NU)=RI*dcos(tetch)
+          write(kanalz,'(i5,5f10.3)')i,U(1,ich,NU),U(2,ich,NU)
+
+	      NCHI(NU)=NCHI(NU) + 1 ! number of children dots for NU parent
+	      end do!ich
+	      end if!ncloc 
+
+
+50      CONTINUE
+
+100     CONTINUE
+
+150     CONTINUE
+
+        N = NU
+
+        aaf = 4.0d0*PI*RI2/area
+	if(CONTROL)then
+	write(*,'(a12,i5,a12,f16.14)')
+     &	'GENUN02:N =',NU,' area norm=',aaf
+	end if
+
+	do i=1,NU
+	AR(i) = aaf*AR(i)
+	end do
+
+        
+        close(kanalz)
+
+	if(print.ge.iprint1)then
+	write(*,*)'coordinates'
+	do k=1,N
+	write(*,'(a10,i5,3f10.6)')'parent ',k,(U(k1,1,k),k1=1,3)
+	do k2=2,ncloc
+	write(*,'(a10,i5,3f10.6)')'childr ',k2,(U(k1,k2,k),k1=1,3)
+	end do
+	end do
+	end if
+	if(print.ge.iprint0)then
+	write(*,*)'GENUN02 finish: Nvect', N
+	end if
+
+        RETURN
+        END
+
+        SUBROUTINE GENUN03(RI,U,AR,N)
+            implicit none
+            integer N
+            REAL*8 RI, valor, goldenratio, ang
+            REAL*8 U(3,N)
+            real*8 AR(N)
+            real pi
+            parameter (pi = 3.1415927)
+            real i(N)
+            real z(N)
+            real theta(N)
+            real phi(N)
+            real out(3,N)
+            logical out_xyz
+            integer k
+            real phi_1, phi_2
+            real area_dot
+            integer kanalz
+            out_xyz = .true.
+            area_dot = (4*pi*RI**2)/N
+
+               if(N<1) then
+                stop
+               end if
+               valor = 5
+               goldenratio = (1+sqrt(valor))/2
+               do 100 k = 1,N
+                    i(k) = k - 0.5
+100         continue
+            do 101 k = 1,N
+                z(k) = 1-(2*i(k))/N
+101          continue
+            do 102 k = 1,N
 C            ang = MAX(-1.0, MIN(1.0,z(k)))
-            if(z(k)<-1) then
-                ang = -1
-            else if(z(k)>1) then
-                ang = 1
-            else
-                ang = z(k)
-            end if
-            theta(k) = acos(ang)
-102       continue
-        do 103 k = 1,N
-            phi_1 = (2*pi*i(k))/goldenratio
-            phi_2 = 2*pi
-            phi(k) = mod(phi_1, phi_2)
-103       continue
+                if(z(k)<-1) then
+                 ang = -1
+                else if(z(k)>1) then
+                 ang = 1
+                else
+                    ang = z(k)
+                end if
+                theta(k) = acos(ang)
+102         continue
+            do 103 k = 1,N
+                phi_1 = (2*pi*i(k))/goldenratio
+                phi_2 = 2*pi
+                phi(k) = mod(phi_1, phi_2)
+103         continue
 
-        if (out_xyz) then
-            open(unit=kanalz,file="genun02.ms",status='unknown') !esc
-            do 104 k = 1,N
-                U(1,k) = RI*sin(theta(k))*cos(phi(k))
-                U(2,k) = RI*sin(theta(k))*sin(phi(k))
-                U(3,k) = RI*z(k)
-                write(kanalz,'(i3, 3f8.3)')k,U(1,k),U(2,k),U(3,k)!esc
-104         continue
-       end if
-       continue
+            if (out_xyz) then
+                open(unit=kanalz,file="genun03.ms",status='unknown') !esc
+                do 104 k = 1,N
+                    U(1,k) = RI*sin(theta(k))*cos(phi(k))
+                    U(2,k) = RI*sin(theta(k))*sin(phi(k))
+                    U(3,k) = RI*z(k)
+                    write(kanalz,'(i3, 3f8.3)')k,U(1,k),U(2,k),U(3,k)!esc
+104             continue
+           end if
+           continue
 
-       do 105 k = 1,N
-            AR(k) = area_dot
-105    continue
-
-       close(kanalz)
+           do 105 k = 1,N
+                AR(k) = area_dot
+105         continue
+    
+             close(kanalz)
 
 
         RETURN
         END
+
 
 c------------------------------------------------------------------
 c          sims:  subroutines
@@ -8285,7 +8535,7 @@ ctt
 		nstor=0
 
        toler_in = 0.1d-6 
-       rpr2=RP**2 !??
+       rpr2=RP**2
        distm = 2.0d0*(RP+toler_cross)
        distm2 = distm**2
        distum = RP + 2.0d0*toler_cross

@@ -1,11 +1,18 @@
-#' @title Reorganization of PDB file.
+#' @title PDB Cleaning.
 #' @name clean_pdb
 #'
-#' @description It's a necessary function to help in the proccess to read file and calculate areas.
-#' @param path_pdb Name or path of PDB file.
-#' @param online Tag to describes if the read will be obtained of Online Way.
+#' @description Cleaning PDB performs the reorganization of data from an input
+#'              PDB file. This function is responsible for removing lines and
+#'              information that are not necessary for calculating occluded
+#'              areas. In addition, the residues and their atoms are renumbered
+#'              to perform the area calculations.
 #'
-#' @author Herson Hebert
+#' @param path_pdb Name or path of PDB file.
+#' @param online Logical parameter that defines whether to download or locally load the PDB file.
+#'
+#' @author Carlos Henrique da Silveira
+#' @author Herson Hebert Mendes Soares
+#' @author João Paulo Roquim Romanelli
 #'
 #' @importFrom bio3d get.pdb
 #' @importFrom bio3d read.pdb
@@ -21,13 +28,13 @@ clean_pdb = function(path_pdb, online){
     }
   }
   file.rename(path_pdb, "temp1.pdb")
-  cmd = system.file("scripts","clean.csh", package = "osfibo")
+  cmd = system.file("scripts","clean.csh", package = "fiboos")
   cmd_1 = paste("chmod +x ",cmd, sep = "")
   system(cmd_1)
   system(cmd)
   file.remove("temp1.pdb")
-  dyn.load(system.file("libs", "osfibo.so", package = "osfibo"))
-  .Fortran("renum", PACKAGE = "osfibo")
+  dyn.load(system.file("libs", "fiboos.so", package = "fiboos"))
+  .Fortran("renum", PACKAGE = "fiboos")
   file.rename("new.pdb", "temp.pdb")
   file.remove("temp1.cln")
   pdb = bio3d::read.pdb("temp.pdb")
@@ -39,6 +46,6 @@ clean_pdb = function(path_pdb, online){
   iresf = as.integer(pdb$atom$resno[1])
   iresl = as.integer(pdb$atom$resno[length(pdb$atom$resno)])
   interval = c(iresf,iresl)
-  dyn.unload(system.file("libs", "osfibo.so", package = "osfibo"))
+  dyn.unload(system.file("libs", "fiboos.so", package = "fiboos"))
   return(interval)
 }

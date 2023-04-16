@@ -2,18 +2,26 @@
 % Please edit documentation in R/cleaner.R
 \name{clean_pdb}
 \alias{clean_pdb}
-\title{Reorganization of PDB file.}
+\title{PDB Cleaning.}
 \usage{
 clean_pdb(path_pdb, online)
 }
 \arguments{
 \item{path_pdb}{Name or path of PDB file.}
 
-\item{online}{Tag to describes if the read will be obtained of Online Way.}
+\item{online}{Logical parameter that defines whether to download or locally load the PDB file.}
 }
 \description{
-It's a necessary function to help in the proccess to read file and calculate areas.
+Cleaning PDB performs the reorganization of data from an input
+PDB file. This function is responsible for removing lines and
+information that are not necessary for calculating occluded
+areas. In addition, the residues and their atoms are renumbered
+to perform the area calculations.
 }
 \author{
-Herson Hebert
+Carlos Henrique da Silveira
+
+Herson Hebert Mendes Soares
+
+João Paulo Roquim Romanelli
 }

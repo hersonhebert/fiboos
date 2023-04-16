@@ -1,5 +1,5 @@
-Package: osfibo
-Title: OSFIBO
+Package: fiboos
+Title: FIBO-OS
 Version: 1.0.0.1
 Authors@R: person("Herson", "Soares", , "hersonhebert@hotmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))

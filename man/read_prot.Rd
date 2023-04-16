@@ -2,13 +2,32 @@
 % Please edit documentation in R/prot_read.R
 \name{read_prot}
 \alias{read_prot}
-\title{Reading Values of Occluded Surface Area.}
+\title{Prot Reading}
 \usage{
-read_prot()
+read_prot(prot)
+}
+\arguments{
+\item{prot}{Path or name of prot file.}
 }
 \description{
-It's a important function to load calculated values to use of user.
+It is crucial to read and manipulate the data of the occluded
+surfaces that were calculated. Through the results, it is
+possible to draw important conclusions and perform studies on
+specific proteins and their behavior at the atomic level.
+}
+\details{
+The function allows reading a prot file, which contains data
+calculated using the OS or FIBOOS methodology. The input parameter
+is the name of the file "prot.srf" or the directory path where it is
+located."
+}
+\seealso{
+\code{\link[=calcule_surface]{calcule_surface()}}
 }
 \author{
-Herson Hebert
+Carlos Henrique da Silveira
+
+Herson Hebert Mendes Soares
+
+João Paulo Roquim Romanelli
 }
