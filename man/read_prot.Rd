@@ -17,12 +17,12 @@ specific proteins and their behavior at the atomic level.
 }
 \details{
 The function allows reading a prot file, which contains data
-calculated using the OS or FIBOOS methodology. The input parameter
+calculated using the OS or FIBOS methodology. The input parameter
 is the name of the file "prot.srf" or the directory path where it is
 located."
 }
 \seealso{
-\code{\link[=calcule_surface]{calcule_surface()}}
+\code{\link[=occluded_surface]{occluded_surface()}}
 }
 \author{
 Carlos Henrique da Silveira

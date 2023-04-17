@@ -1,11 +1,16 @@
-Package: fiboos
-Title: FIBO-OS
+Package: fibos
+Title: FIBOS
 Version: 1.0.0.1
-Authors@R: person("Herson", "Soares", , "hersonhebert@hotmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: The package receive one PDB file or your name so that if the user 
-      informs that online is true, will be realized the download of PDB file. 
-      After, will be calculatede the occluded areas and returned for the user.
+Authors@R: c(
+            person("Carlos", "Silveira", email = "carlos.silveira@unifei.edu.br", role = "cre"),
+            person("Herson", "Hebert", email = "hersonhebert@hotmail.com", role = "aut"),
+            person("João", "Romanelli", email = "joaoromanelli@unifei.edu.br", role = "aut"),
+            person("Posit Software, PBC", role = c("cph", "fnd")))
+Description: The fibos package contains the implementation of important 
+             methodologies for bioinformatics, the first being the Occluded
+             Surface, created by Patrick Fleming, and the second methodology, 
+             the Fibonacci Occluded Surface, created with a new approach to dot 
+             distribution on an atom.
 Depends: R (>= 3.3.0)
 License: GPL-3
 Encoding: UTF-8

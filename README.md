@@ -1,1 +1,1 @@
-# fiboOS
+# fibos

@@ -4,7 +4,7 @@
 #' @description The implemented function executes the implemented methods.
 #'              Using this function, it is possible to calculate occluded areas
 #'              through the traditional methodology, Occluded Surface, or by
-#'              applying the FIBO OS methodology. At the end of the method
+#'              applying the Fibonacci OS methodology. At the end of the method
 #'              execution, the "prot.srf" file is generated, which can later be
 #'              loaded through the read_prot function. The data in this file
 #'              refers to all contacts between atoms of molecules present in a
@@ -15,7 +15,7 @@
 #' @param maxres Maximum number of residues.
 #' @param maxat Maximum number of atoms.
 #'
-#' @seealso fiboos::read_prot
+#' @seealso fibos::read_prot
 #'
 #' @importFrom stats rnorm
 #'
@@ -31,28 +31,28 @@ call_main = function(iresf, iresl, maxres, maxat){
   z = double(maxat)
   main_75 = .Fortran("main", resnum = as.integer(resnum), natm = as.integer(0),
                      x=as.double(rnorm(maxat)) ,y = as.double(rnorm(maxat)),
-                     z = as.double(rnorm(maxat)), iresf, iresl, PACKAGE = "fiboos")
+                     z = as.double(rnorm(maxat)), iresf, iresl, PACKAGE = "fibos")
   return(main_75)
 }
 
 execute = function(iresf, iresl, method){
   maxres = 10000
   maxat = 50000
-  dyn.load(system.file("libs", "fiboos.so", package = "fiboos"))
+  dyn.load(system.file("libs", "fibos.so", package = "fibos"))
   main_75 = call_main(iresf, iresl, maxres, maxat)
   pb = txtProgressBar(min = iresf, max = iresl, style = 3)
   for(ires in iresf:(iresl+1)){
     setTxtProgressBar(pb,ires)
     intermediate = .Fortran("main_intermediate", main_75$x, main_75$y,
                             main_75$z, as.integer(ires), main_75$resnum,
-                            main_75$natm, PACKAGE = "fiboos")
+                            main_75$natm, PACKAGE = "fibos")
     .Fortran("main_intermediate01",x=as.double(rnorm(maxat)),
              y = as.double(rnorm(maxat)),
              z = as.double(rnorm(maxat)), as.integer(ires), main_75$resnum,
-             main_75$natm, PACKAGE = "fiboos")
-    .Fortran("runSIMS", PACKAGE = "fiboos", as.integer(method))
-    .Fortran("surfcal", PACKAGE = "fiboos")
+             main_75$natm, PACKAGE = "fibos")
+    .Fortran("runSIMS", PACKAGE = "fibos", as.integer(method))
+    .Fortran("surfcal", PACKAGE = "fibos")
   }
-  .Fortran("main_intermediate02", as.integer(method),PACKAGE = "fiboos")
-  dyn.unload(system.file("libs", "fiboos.so", package = "fiboos"))
+  .Fortran("main_intermediate02", as.integer(method),PACKAGE = "fibos")
+  dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
 }

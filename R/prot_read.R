@@ -9,11 +9,11 @@
 #' @param prot Path or name of prot file.
 #'
 #' @details The function allows reading a prot file, which contains data
-#'          calculated using the OS or FIBOOS methodology. The input parameter
+#'          calculated using the OS or FIBOS methodology. The input parameter
 #'          is the name of the file "prot.srf" or the directory path where it is
 #'          located."
 #'
-#' @seealso [calcule_surface()]
+#' @seealso [occluded_surface()]
 #'
 #' @author Carlos Henrique da Silveira
 #' @author Herson Hebert Mendes Soares

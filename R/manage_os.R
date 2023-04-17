@@ -1,5 +1,5 @@
 #' @title Calcule the Surface
-#' @name calcule_surface
+#' @name occluded_surface
 #'
 #' @description The calculation of occluded surface areas is essential for
 #'              understanding the possibility of an enzyme passing between atoms
@@ -9,7 +9,7 @@
 #'
 #' @param path_pdb Path or name of PDB File
 #' @param online Logical parameter that defines whether to download or locally load the PDB file.
-#' @param method Method to be used - 1: OS ; 2: FIBOOS
+#' @param method Method to be used - 1: OS ; 2: FIBOS
 #'
 #' @seealso [read_prot()]
 #'
@@ -18,14 +18,14 @@
 #' @author João Paulo Roquim Romanelli
 #'
 #' @export
-calcule_surface = function(path_pdb, online, method){
+occluded_surface = function(path_pdb, online, method){
   if(file.exists("prot.srf")){
     file.remove("prot.srf")
   }
   if(file.exists("temp.pdb")){
     file.remove("temp.pdb")
   }
-  path = system.file("extdata", "radii", package = "fiboos")
+  path = system.file("extdata", "radii", package = "fibos")
   file.copy(from = path, to = getwd())
   interval = clean_pdb(path_pdb, online)
   iresf = interval[1]
