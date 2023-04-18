@@ -58,11 +58,28 @@ occluded_surface("1ppf", 1)
 
 occluded_surface("1ppf", 2)
 
-Function return:
+#### Executing from a local PDB file
+
+* To execute using traditional OS:
+
+occluded_surface("1ppf.pdb", 1)
+occluded_surface("~/1ppf.pdb", 1)
+
+
+* To execute using Fibonacci OS - FIBOS:
+
+occluded_surface("1ppf.pdb", 2)
+occluded_surface("~/1ppf.pdb", 2)
+
+### Using the read_OS
+
+* To execute read_OS:
+
+read_OS("prot.srf")
+
+### Function return (occluded_surface and read_OS):
 
 ![alt text](Pictures/print_return.png = 200x200)
-
-#### Executing from a local PDB file
 
 ## Authors
 
