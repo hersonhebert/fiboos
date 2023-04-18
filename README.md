@@ -79,7 +79,7 @@ read_OS("prot.srf")
 
 ### Function return (occluded_surface and read_OS):
 
-![alt text](Pictures/print_return.png = 200x200)
+![alt text](Pictures/print_return.png)
 
 ## Authors
 
