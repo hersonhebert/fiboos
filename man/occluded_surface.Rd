@@ -4,12 +4,10 @@
 \alias{occluded_surface}
 \title{Calcule the Surface}
 \usage{
-occluded_surface(path_pdb, online, method)
+occluded_surface(path_pdb, method)
 }
 \arguments{
-\item{path_pdb}{Path or name of PDB File}
-
-\item{online}{Logical parameter that defines whether to download or locally load the PDB file.}
+\item{path_pdb}{Input containing only the name of the 4-digit PDB file, the file will be obtained online. If there is an extension ".pdb" or full path, the file will be obtained locally.}
 
 \item{method}{Method to be used - 1: OS ; 2: FIBOS}
 }
@@ -21,7 +19,7 @@ a surface is occluded based on tests with a probe, which is
 typically the water molecule.
 }
 \seealso{
-\code{\link[=read_prot]{read_prot()}}
+\code{\link[=read_OS]{read_OS()}}
 }
 \author{
 Carlos Henrique da Silveira

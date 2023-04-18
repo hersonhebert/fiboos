@@ -50,6 +50,17 @@ Responsible for reading the data file on the occlusion of areas of the atoms of 
 ### Using the occluded_surface
 
 #### Executing from an online PDB file
+* To execute using traditional OS:
+
+occluded_surface("1ppf", 1)
+
+* To execute using Fibonacci OS - FIBOS:
+
+occluded_surface("1ppf", 2)
+
+Function return:
+
+![alt text](Pictures/print_return.png)
 
 #### Executing from a local PDB file
 

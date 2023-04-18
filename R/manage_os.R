@@ -7,18 +7,17 @@
 #'              a surface is occluded based on tests with a probe, which is
 #'              typically the water molecule.
 #'
-#' @param path_pdb Path or name of PDB File
-#' @param online Logical parameter that defines whether to download or locally load the PDB file.
+#' @param path_pdb Input containing only the name of the 4-digit PDB file, the file will be obtained online. If there is an extension ".pdb" or full path, the file will be obtained locally.
 #' @param method Method to be used - 1: OS ; 2: FIBOS
 #'
-#' @seealso [read_prot()]
+#' @seealso [read_OS()]
 #'
 #' @author Carlos Henrique da Silveira
 #' @author Herson Hebert Mendes Soares
 #' @author João Paulo Roquim Romanelli
 #'
 #' @export
-occluded_surface = function(path_pdb, online, method){
+occluded_surface = function(path_pdb, method){
   if(file.exists("prot.srf")){
     file.remove("prot.srf")
   }
@@ -27,11 +26,12 @@ occluded_surface = function(path_pdb, online, method){
   }
   path = system.file("extdata", "radii", package = "fibos")
   file.copy(from = path, to = getwd())
-  interval = clean_pdb(path_pdb, online)
+  interval = clean_pdb(path_pdb)
   iresf = interval[1]
   iresl = interval[2]
   execute(iresf, iresl, method)
   remove_files()
+  return(read_OS("prot.srf"))
 }
 
 remove_files = function(){

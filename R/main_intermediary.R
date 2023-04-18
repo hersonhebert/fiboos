@@ -5,17 +5,16 @@
 #'              Using this function, it is possible to calculate occluded areas
 #'              through the traditional methodology, Occluded Surface, or by
 #'              applying the Fibonacci OS methodology. At the end of the method
-#'              execution, the "prot.srf" file is generated, which can later be
-#'              loaded through the read_prot function. The data in this file
-#'              refers to all contacts between atoms of molecules present in a
-#'              protein's PDB.
+#'              execution, the "prot.srf" file is generated, and returned for
+#'              the function. The data in this file refers to all contacts
+#'              between atoms of molecules present in a protein's PDB.
 #'
 #' @param iresf The number of the first element in the PDB
 #' @param iresl The number of the first element in the PDB
 #' @param maxres Maximum number of residues.
 #' @param maxat Maximum number of atoms.
 #'
-#' @seealso fibos::read_prot
+#' @seealso fibos::read_OS
 #'
 #' @importFrom stats rnorm
 #'

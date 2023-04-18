@@ -4,12 +4,10 @@
 \alias{clean_pdb}
 \title{PDB Cleaning.}
 \usage{
-clean_pdb(path_pdb, online)
+clean_pdb(path_pdb)
 }
 \arguments{
-\item{path_pdb}{Name or path of PDB file.}
-
-\item{online}{Logical parameter that defines whether to download or locally load the PDB file.}
+\item{path_pdb}{Input containing only the name of the 4-digit PDB file, the file will be obtained online. If there is an extension ".pdb" or full path, the file will be obtained locally.}
 }
 \description{
 Cleaning PDB performs the reorganization of data from an input
