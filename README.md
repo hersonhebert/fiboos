@@ -25,7 +25,7 @@ install_github(“https://github.com/hersonhebert/fibos”)
 
 The package consists of two functions: occluded_surface and read_OS. We will separately discuss the use of each of them.
 
-* occluded_surface(path_pdb, method)
+1. occluded_surface(path_pdb, method)
 
 It is the function responsible for calculating the occluded areas between atoms and generating the "prot.srf" file. It is important to note that the file reading is not done automatically. For this, the read_prot function should be used, passing the file as a parameter.
 
@@ -39,7 +39,7 @@ The three parameters present in the function declaration are important as they d
 
   - Fibonacci OS (FIBOS): 2
 
-* read_OS(prot)
+2. read_OS(prot)
 
 Responsible for reading the data file on the occlusion of areas of the atoms of the used protein. This function has only one parameter to be passed, which is prot.
 
