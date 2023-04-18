@@ -60,7 +60,7 @@ occluded_surface("1ppf", 2)
 
 Function return:
 
-![alt text](Pictures/print_return.png)
+![alt text](Pictures/print_return.png = 200x200)
 
 #### Executing from a local PDB file
 
