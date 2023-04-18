@@ -35,9 +35,9 @@ The three parameters present in the function declaration are important as they d
 
 - method: This is the method to be chosen for the calculation of occluded areas between atoms. After the selection of the method, the "prot.srf" file is generated to be read later. The following values can be passed as parameters to this function:
 
-- Traditional OS: 1
+  - Traditional OS: 1
 
-- Fibonacci OS (FIBOS): 2
+  - Fibonacci OS (FIBOS): 2
 
 * read_OS(prot)
 
