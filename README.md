@@ -55,5 +55,8 @@ Responsible for reading the data file on the occlusion of areas of the atoms of 
 
 ## Authors
 
+- [Carlos da Silveira](https://github.com/profcaveira)
+- [Herson Soares](https://github.com/hersonhebert)
+
 ## Status
 In Progress.
