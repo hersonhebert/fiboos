@@ -21,7 +21,7 @@ Note: Please note that the package requires some additional libraries such as:
 library(devtools)
 
 install_github(“https://github.com/hersonhebert/fibos”)
-# # #Using the Package:
+### Using the Package:
 
 The package consists of two functions: occluded_surface and read_OS. We will separately discuss the use of each of them.
 
