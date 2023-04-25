@@ -8,7 +8,7 @@
 #'              typically the water molecule.
 #'
 #' @param path_pdb Input containing only the name of the 4-digit PDB file, the file will be obtained online. If there is an extension ".pdb" or full path, the file will be obtained locally.
-#' @param method Method to be used - 1: OS ; 2: FIBOS
+#' @param method Method to be used: OS or FIBOS
 #'
 #' @seealso [read_OS()]
 #'
@@ -18,18 +18,28 @@
 #'
 #' @export
 occluded_surface = function(path_pdb, method){
+  meth = 0
   if(file.exists("prot.srf")){
     file.remove("prot.srf")
   }
   if(file.exists("temp.pdb")){
     file.remove("temp.pdb")
   }
-  path = system.file("extdata", "radii", package = "fibos")
+  path = system.file("extdata", "radii", package = "os")
   file.copy(from = path, to = getwd())
   interval = clean_pdb(path_pdb)
   iresf = interval[1]
   iresl = interval[2]
-  execute(iresf, iresl, method)
+  if(toupper(method) == "OS"){
+    meth = 1
+  }
+  if(toupper(method) == "FIBOS"){
+    meth = 2
+  }
+  if(!(toupper(method) == "OS")&!(toupper(method) == "FIBOS")){
+    stop("Wrong Method")
+  }
+  execute(iresf, iresl, meth)
   remove_files()
   return(read_OS("prot.srf"))
 }

@@ -9,7 +9,7 @@ occluded_surface(path_pdb, method)
 \arguments{
 \item{path_pdb}{Input containing only the name of the 4-digit PDB file, the file will be obtained online. If there is an extension ".pdb" or full path, the file will be obtained locally.}
 
-\item{method}{Method to be used - 1: OS ; 2: FIBOS}
+\item{method}{Method to be used: OS or FIBOS}
 }
 \description{
 The calculation of occluded surface areas is essential for

@@ -26,7 +26,7 @@ the function. The data in this file refers to all contacts
 between atoms of molecules present in a protein's PDB.
 }
 \seealso{
-fibos::read_OS
+os::read_OS
 }
 \author{
 Carlos Henrique da Silveira

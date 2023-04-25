@@ -1,5 +1,5 @@
-Package: fibos
-Title: FIBOS
+Package: os
+Title: OS
 Version: 1.0.0.1
 Authors@R: c(
             person("Carlos", "Silveira", email = "carlos.silveira@unifei.edu.br", role = "cre"),

@@ -14,7 +14,7 @@
 #' @param maxres Maximum number of residues.
 #' @param maxat Maximum number of atoms.
 #'
-#' @seealso fibos::read_OS
+#' @seealso os::read_OS
 #'
 #' @importFrom stats rnorm
 #'
@@ -30,28 +30,28 @@ call_main = function(iresf, iresl, maxres, maxat){
   z = double(maxat)
   main_75 = .Fortran("main", resnum = as.integer(resnum), natm = as.integer(0),
                      x=as.double(rnorm(maxat)) ,y = as.double(rnorm(maxat)),
-                     z = as.double(rnorm(maxat)), iresf, iresl, PACKAGE = "fibos")
+                     z = as.double(rnorm(maxat)), iresf, iresl, PACKAGE = "os")
   return(main_75)
 }
 
 execute = function(iresf, iresl, method){
   maxres = 10000
   maxat = 50000
-  dyn.load(system.file("libs", "fibos.so", package = "fibos"))
+  dyn.load(system.file("libs", "os.so", package = "os"))
   main_75 = call_main(iresf, iresl, maxres, maxat)
   pb = txtProgressBar(min = iresf, max = iresl, style = 3)
   for(ires in iresf:(iresl+1)){
     setTxtProgressBar(pb,ires)
     intermediate = .Fortran("main_intermediate", main_75$x, main_75$y,
                             main_75$z, as.integer(ires), main_75$resnum,
-                            main_75$natm, PACKAGE = "fibos")
+                            main_75$natm, PACKAGE = "os")
     .Fortran("main_intermediate01",x=as.double(rnorm(maxat)),
              y = as.double(rnorm(maxat)),
              z = as.double(rnorm(maxat)), as.integer(ires), main_75$resnum,
-             main_75$natm, PACKAGE = "fibos")
-    .Fortran("runSIMS", PACKAGE = "fibos", as.integer(method))
-    .Fortran("surfcal", PACKAGE = "fibos")
+             main_75$natm, PACKAGE = "os")
+    .Fortran("runSIMS", PACKAGE = "os", as.integer(method))
+    .Fortran("surfcal", PACKAGE = "os")
   }
-  .Fortran("main_intermediate02", as.integer(method),PACKAGE = "fibos")
-  dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
+  .Fortran("main_intermediate02", as.integer(method),PACKAGE = "os")
+  dyn.unload(system.file("libs", "os.so", package = "os"))
 }

@@ -25,13 +25,13 @@ clean_pdb = function(path_pdb){
      }
    }
   file.rename(path_pdb, "temp1.pdb")
-  cmd = system.file("scripts","clean.csh", package = "fibos")
+  cmd = system.file("scripts","clean.csh", package = "os")
   cmd_1 = paste("chmod +x ",cmd, sep = "")
   system(cmd_1)
   system(cmd)
   file.remove("temp1.pdb")
-  dyn.load(system.file("libs", "fibos.so", package = "fibos"))
-  .Fortran("renum", PACKAGE = "fibos")
+  dyn.load(system.file("libs", "os.so", package = "os"))
+  .Fortran("renum", PACKAGE = "os")
   file.rename("new.pdb", "temp.pdb")
   file.remove("temp1.cln")
   pdb = bio3d::read.pdb("temp.pdb")
@@ -43,6 +43,6 @@ clean_pdb = function(path_pdb){
   iresf = as.integer(pdb$atom$resno[1])
   iresl = as.integer(pdb$atom$resno[length(pdb$atom$resno)])
   interval = c(iresf,iresl)
-  dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
+  dyn.unload(system.file("libs", "os.so", package = "os"))
   return(interval)
 }
