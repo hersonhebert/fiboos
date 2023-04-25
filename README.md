@@ -18,8 +18,7 @@ Note: These additional libraries are also required:
 ## How use
 ### Installing the Package
 
-library(devtools)  
-
+library(devtools)\s\s
 install_github("https://github.com/hersonhebert/os")  
 
 
