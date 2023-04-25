@@ -1,4 +1,4 @@
-# OS
+# OS - OCCLUDED SURFACE PACKAGE
 ## Description
 The OS package was developed with the objective to offer in R the Occluded Surface methodology, created by Patrick Fleming and coauthors [Pattabiraman, Ward, & Fleming, 1995]
 ## Functionalities
