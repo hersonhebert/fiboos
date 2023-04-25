@@ -18,21 +18,24 @@ Note: These additional libraries are also required:
 ## How use
 ### Installing the Package
 
-library(devtools)
+library(devtools)  
 
-
-install_github("https://github.com/hersonhebert/os")
+install_github("https://github.com/hersonhebert/os")  
 
 
 ### Using the Package:
 
 In this beta version, only two functions were implemented: occluded_surface and read_OS.
 
-library(byo3d)
-library(dplyr)
-library(readr)
-library(stringr)
-library(tidyr)
+library(byo3d)  
+
+library(dplyr)  
+
+library(readr)  
+
+library(stringr)  
+
+library(tidyr)  
 
 m = occluded_surface(pdb, method)
 
