@@ -6,7 +6,7 @@ The package allows the calculation of occluded surface areas between atoms of a 
 ## Requirements
 Firstly, it is necessary to have devtools installed:
 
-install.packages(“devtools”)
+    install.packages(“devtools”)
 
 Note: These additional libraries are also required:
   * bio3d
@@ -18,25 +18,19 @@ Note: These additional libraries are also required:
 ## How use
 ### Installing the Package
 
-library(devtools)\s\s
-install_github("https://github.com/hersonhebert/os")  
-
+    library(devtools)\
+    install_github("https://github.com/hersonhebert/os")  
 
 ### Using the Package:
 
 In this beta version, only two functions were implemented: occluded_surface and read_OS.
 
-library(byo3d)  
-
-library(dplyr)  
-
-library(readr)  
-
-library(stringr)  
-
-library(tidyr)  
-
-m = occluded_surface(pdb, method)
+    library(byo3d)\
+    library(dplyr)\
+    library(readr)\
+    library(stringr)\
+    library(tidyr)\
+    m = occluded_surface(pdb, method)
 
 The function is responsible for computing the occluded areas between atoms and returning the results as a tibble/data frame. Additionally, it generates the prot.srf file as a side effect.
 
@@ -46,17 +40,14 @@ Regarding the parameters:
 
   - method: this parameter determines the method used to calculate the occluded areas between atoms. Accepts the strings "OS" (tradicional) or "FIBOS" (experimental) 
 
-m = read_OS(file)
+    m = read_OS(file)
 
   - file: the path to the prot.srf file.
 
 ## Examples
 
-m.os = occluded_surface("1ppf", method = "OS")
-
-m.fibos = occluded_surface("data/1ppf.pdb", method = "FIBOS")
-
-m = read_OS("prot.srf")
+    m = occluded_surface("1ppf", method = "OS")
+    m = read_OS("prot.srf")
 
 ### Function return (occluded_surface and read_OS):
 
