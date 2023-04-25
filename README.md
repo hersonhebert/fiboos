@@ -62,8 +62,8 @@ m = read_OS("prot.srf")
 
 ## Authors
 
-- [Carlos da Silveira](carlos.silveira@unifei.edu.br)
-- [Herson Soares](d2020102075@unifei.edu.br)
+- Carlos da Silveira  carlos.silveira@unifei.edu.br
+- Herson Soares d2020102075@unifei.edu.br
 
 ## References
 
