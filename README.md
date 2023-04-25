@@ -20,6 +20,7 @@ Note: These additional libraries are also required:
 
 library(devtools)
 
+
 install_github("https://github.com/hersonhebert/os")
 
 
