@@ -1,14 +1,14 @@
 # OS
 ## Description
-The OS package was developed with the objective of enabling the use of the Occluded Surface methodology, created by Patrick Fleming, in environments other than Fortran. Additionally, we added a new way of generating dots, which allows for better symmetry between the atoms of protein molecules.
+The OS package was developed with the objective to offer in R the Occluded Surface methodology, created by Patrick Fleming and coauthors [Pattabiraman, Ward, & Fleming, 1995]
 ## Functionalities
-The package allows for the calculation of occluded areas between atoms of a molecule, using an input PDB file. For this, two methodologies can be used: OS or FIBOS. In both, contact area data is generated, and consequently, the file containing information regarding the calculation results based on the selected methodology.
+The package allows the calculation of occluded surface areas between atoms of a molecule, using as input a PDB code or PDB file. 
 ## Requirements
-Firstly, it is necessary to have devtools installed in Rstudio:
+Firstly, it is necessary to have devtools installed:
 
 install.packages(“devtools”)
 
-Note: Please note that the package requires some additional libraries such as:
+Note: This additional libraries are also required:
   * bio3d
   * dplyr
   * readr
@@ -19,12 +19,11 @@ Note: Please note that the package requires some additional libraries such as:
 ### Installing the Package
 
 library(devtools)
-
-install_github(“https://github.com/hersonhebert/os”)
+install_github("https://github.com/hersonhebert/os")
 
 ### Using the Package:
 
-Currently, the package is limited to two functions: occluded_surface and read_OS In this discussion, we will cover the use of each of these functions separately. Let's begin with occluded_surface:
+In this beta version, only two functions were implemented: occluded_surface and read_OS.
 
 library(byo3d)
 library(dplyr)
@@ -34,15 +33,13 @@ library(tidyr)
 
 m = occluded_surface(pdb, method)
 
-The function is responsible for computing the occluded areas between atoms and returning the results as a tibble. Additionally, it generates the prot.srf file as a side effect.
+The function is responsible for computing the occluded areas between atoms and returning the results as a tibble/data frame. Additionally, it generates the prot.srf file as a side effect.
 
 Regarding the parameters:
 
   - pdb: this can either be the code or path/file of the PDB that represents a protein. If you wish to obtain the file online from the RCSB PDB site, simply enter the PDB code. If the file is saved locally, enter the file path.
 
-  - method: this parameter determines the method used to calculate the occluded areas between atoms. Accepts the strings "OS" or "FIBOS"
-
-The other function reads an OS prot.srf file:
+  - method: this parameter determines the method used to calculate the occluded areas between atoms. Accepts the strings "OS" (tradicional) or "FIBOS" (experimental) 
 
 m = read_OS(file)
 
