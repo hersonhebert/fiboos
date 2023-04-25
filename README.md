@@ -62,8 +62,12 @@ m = read_OS("prot.srf")
 
 ## Authors
 
-- [Carlos da Silveira](https://github.com/profcaveira)
-- [Herson Soares](https://github.com/hersonhebert)
+- [Carlos da Silveira](carlos.silveira@unifei.edu.br)
+- [Herson Soares](d2020102075@unifei.edu.br)
+
+## References
+
+Pattabiraman, N., Ward, K. B., & Fleming, P. J. (1995). Occluded molecular surface: Analysis of protein packing. Journal of Molecular Recognition, 8, 334–344. https://doi.org/doi.org/10.1002/jmr.300080603
 
 ## Status
 In Progress.
