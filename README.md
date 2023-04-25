@@ -8,7 +8,7 @@ Firstly, it is necessary to have devtools installed:
 
 install.packages(“devtools”)
 
-Note: This additional libraries are also required:
+Note: These additional libraries are also required:
   * bio3d
   * dplyr
   * readr
@@ -19,7 +19,9 @@ Note: This additional libraries are also required:
 ### Installing the Package
 
 library(devtools)
+
 install_github("https://github.com/hersonhebert/os")
+
 
 ### Using the Package:
 
