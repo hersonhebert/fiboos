@@ -18,45 +18,44 @@ Note: These additional libraries are also required:
 ## How use
 ### Installing the Package
 
-    library(devtools)\
+    library(devtools)
     install_github("https://github.com/hersonhebert/os")  
 
 ### Using the Package:
 
-In this beta version, only two functions were implemented: occluded_surface and read_OS.
+In this beta version, only two functions were implemented: **occluded_surface** and **read_OS**.
 
-    library(byo3d)\
-    library(dplyr)\
-    library(readr)\
-    library(stringr)\
-    library(tidyr)\
-    m = occluded_surface(pdb, method)
+The first function is responsible for computing the occluded areas between atoms and returning the results as a tibble/data frame. Additionally, it generates the prot.srf file as a side effect.
 
-The function is responsible for computing the occluded areas between atoms and returning the results as a tibble/data frame. Additionally, it generates the prot.srf file as a side effect.
-
-Regarding the parameters:
+Parameters:
 
   - pdb: this can either be the code or path/file of the PDB that represents a protein. If you wish to obtain the file online from the RCSB PDB site, simply enter the PDB code. If the file is saved locally, enter the file path.
 
-  - method: this parameter determines the method used to calculate the occluded areas between atoms. Accepts the strings "OS" (tradicional) or "FIBOS" (experimental) 
+  - method: this parameter determines the method used to calculate the occluded areas between atoms. Accepts the strings "OS" (tradicional) or "FIBOS" (experimental).
 
-    m = read_OS(file)
-
-  - file: the path to the prot.srf file.
+The second function read a "prot.srt" file.
 
 ## Examples
 
+    library(byo3d)
+    library(dplyr)
+    library(readr)
+    library(stringr)
+    library(tidyr)
     m = occluded_surface("1ppf", method = "OS")
     m = read_OS("prot.srf")
 
-### Function return (occluded_surface and read_OS):
+### Table returned from occluded_surface or read_OS:
+ 
 
 ![alt text](Pictures/print_return.png)
 
 ## Authors
 
-- Carlos Henrique da Silveira:  carlos.silveira@unifei.edu.br
-- Herson Hebert Mendes Soares: d2020102075@unifei.edu.br
+- Herson Soares: d2020102075@unifei.edu.br
+- Carlos Silveira:  carlos.silveira@unifei.edu.br
+- João Romanelli: joaoromanelli@unifei.edu.br
+
 
 ## References
 
