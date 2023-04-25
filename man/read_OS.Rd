@@ -4,10 +4,10 @@
 \alias{read_OS}
 \title{Prot Reading}
 \usage{
-read_OS(prot)
+read_OS(file)
 }
 \arguments{
-\item{prot}{Path or name of prot file.}
+\item{file}{Path or name of prot file.}
 }
 \description{
 It is crucial to read and manipulate the data of the occluded

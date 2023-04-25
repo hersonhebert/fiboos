@@ -6,7 +6,7 @@
 #'              possible to draw important conclusions and perform studies on
 #'              specific proteins and their behavior at the atomic level.
 #'
-#' @param prot Path or name of prot file.
+#' @param file Path or name of prot file.
 #'
 #' @details The function allows reading a prot file, which contains data
 #'          calculated using the OS or FIBOS methodology. The input parameter
@@ -28,8 +28,8 @@
 #'
 #' @export
 
-read_OS = function(prot){
-  dado = read_fwf(prot)
+read_OS = function(file){
+  dado = read_fwf(file)
   dado = filter(dado, X1 == "INF")
   dado$X7 = NULL
   dado = rename(dado, INF = X1, ATOM = X2, NUMBER_POINTS = X3, AREA = X4, RAYLENGTH = X5, DISTANCE = X6)
