@@ -56,7 +56,7 @@ c********************************************************************
        double precision b(maxat)
        double precision c(maxat)
 
-20     format('   Residue(s) to calculate not in PDB file.')
+c20     format('   Residue(s) to calculate not in PDB file.')
 
         do i = 1,maxres
             chain(i) = ""
@@ -110,9 +110,9 @@ c Close pdb file
 
 c Check that range of interest is in pdb file
        if (iresf .lt. resnum(1)) then
-         write(6,20)
+c         write(6,20)
        else if (iresl .gt. resnum(natm)) then
-         write(6,20)
+c         write(6,20)
        end if
 
        open(unit = kanala, file = 'atype.txt', status = 'unknown')

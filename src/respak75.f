@@ -29,8 +29,10 @@ c       fleming@csb.yale.edu
 
 c************************************************************
 
-	integer i,j,k,lunit	!lunit is file unit in askfil
-	integer maxres		!maximum number of residues
+	subroutine respak
+
+	integer i,j,k,lunit
+	integer maxres
 
 	parameter (maxres=10000)
 
@@ -38,25 +40,25 @@ c************************************************************
         character aa(24)*3
 
 	character resnum(maxres)*4
-	integer cntcres(maxres)	!Occluding residues
+	integer cntcres(maxres)
 
- 	integer current		!1 if calculating current res, i
-				!0 if calculating occluding res j
+ 	integer current
+
 
 c The "packing value" = sum[occ surf*(1-raylength)]
 
-        real respv(maxres)          !Residue Packing Value
-        real pupv(maxres)       !Packing Unit Packing Value
-        real resos(maxres)          !Residue os
-        real totos(maxres)      !Total os in interaction faces
-	real os,raylen		!occ surf and raylength
+        real respv(maxres)
+        real pupv(maxres)
+        real resos(maxres)
+        real totos(maxres)
+	real os,raylen
         real ES_Total(maxres)
         real OS_Total(maxres)
-	real srfaa(maxres)	!Total surface area of residue(i)
-        real norpak(maxres)	!Normalized packing value
+	real srfaa(maxres)
+        real norpak(maxres)
 
-	integer dummy		!Used for comparison
-	integer frstres		!Store number of first residue
+	integer dummy
+	integer frstres
 
 c These used to identify restype for assigning total surface area
         data aa/'ALA','ARG','ASN','ASP','CYS','CYT',
@@ -73,7 +75,7 @@ c    &  'Name of the .srf file?','Name for output file? ' /
         lunit=1
 c       call askfil(lunit,fname,'old',prompt(lunit))
 c For the OS package hardwire the file names
-        open(unit=lunit,file='prot.srf',status='old')
+        open(unit=lunit,file='prot.srf',status='unknown')
 
         lunit=2
 c       call askfil(lunit,fname,'unk',prompt(lunit))
@@ -99,12 +101,12 @@ c Initialize arrays
 	end do
 
 c Formats
-100	  format(a80)		!for reading each line
-102	format(71x,i4)		!for reading first residue
-104     format(20x,f9.3)	!for reading ES_Total, OS_Total
+100	  format(a80)
+102	format(71x,i4)
+104     format(20x,f9.3)
 108     format(4x,'Resnum',2x,'Resname',7x,'OS',5x,'os*[1-raylen]'
      1   ,3x,'OSP')
-110     format(5x,i4,5x,a3,5x,f7.2,5x,f7.2,5x,f7.3) !writing 
+110     format(5x,i4,5x,a3,5x,f7.2,5x,f7.2,5x,f7.3)
 112     format(5x,i4,'      ?         0.0         0.0        0.0')
 
 c Start main program
@@ -116,39 +118,39 @@ c Start main program
 c Get number of first residue for later register
 	read(1,102)frstres
 
-	i=frstres			!make i=resnum (integer)
+	i=frstres
 
 	do while (.true.)
 101	  continue
-	  read(1,100,end=909)line	!When EOF exit do loop
-	  if(line(1:3) .eq. 'INF')then     !want this record 
-	    resnam(i) = line(5:7)		!get residue name
-	    resnum(i) = line(9:12)	!get residue number(char)
-	    backspace (unit = 1)  !want to re-read with corr format
+	  read(1,100,end=909)line
+	  if(line(1:3) .eq. 'INF')then
+	    resnam(i) = line(5:7)
+	    resnum(i) = line(9:12)
+	    backspace (unit = 1)
  	    call rescalc(cntcres,i,j,respv,current,resos)
             totos(i)=totos(i)+resos(i)
- 	    pupv(i)=pupv(i)+respv(i)   !Sum packing unit packing value
- 	  else if(line(1:3) .eq. 'AVG') then !this line is
- 	    goto 101			!atom average, read another
+ 	    pupv(i)=pupv(i)+respv(i)
+ 	  else if(line(1:3) .eq. 'AVG') then
+ 	    goto 101
 
           else if(line(5:12) .eq. 'ES_Total') then
-            backspace (unit = 1)  !want to re-read with corr format
+            backspace (unit = 1)
             read(1,104)ES_Total(i)
 
           else if(line(5:12) .eq. 'OS_Total') then
-            backspace (unit = 1)  !want to re-read with corr format
+            backspace (unit = 1)
             read(1,104)OS_Total(i)
             srfaa(i) = ES_Total(i) + OS_Total(i)
 
- 	  else	if(line(5:10) .eq. 'SC_RAY') then	!this line is at end
-c	         				!of residue 
-	    i=i+1			!increase residue counter
+ 	  else	if(line(5:10) .eq. 'SC_RAY') then
+c
+	    i=i+1
 
  	  end if
 
  	end do
 
-909	continue	!Here at EOF for prot.srf
+909	continue
 
 c Now calculate normalized packing
 c norpak=[pupv/(total surf(i)]
@@ -161,20 +163,22 @@ c Write out packing to file, "prot.pak"
         write(2,108)
  	do k=frstres,(i-1)
             dummy = 0
-          do j=1,24           !determine if residue has os
+          do j=1,24
             if(resnam(k).eq.aa(j))then
               write(2,110)k,resnam(k),totos(k),pupv(k),norpak(k)
               dummy = 1
             end if
           end do
-            if (dummy .eq. 0) then  !Residue had no os and
-c				    !we don't know its name
-c				    !because had no INF line
+            if (dummy .eq. 0) then
+c
+c
               write(2,112)k
             end if
  	end do
-
-	end		!End of main program
+ 	CLOSE(1)
+ 	CLOSE(2)
+	end subroutine respak
+c	end subroutine respak
 
 c*************************************************************
 c
@@ -184,11 +188,11 @@ c*************************************************************
 
 c Argument declarations
 	integer lunit
-	character*3 age		!either "old" or "new"
+	character*3 age
 	character*40 fname
 	character*(*) prompt
 
-	write(6,100) prompt	!Ask for file name
+	write(6,100) prompt
 	read(5,200) fname
 
 	if (age .eq. 'old') then
@@ -244,13 +248,13 @@ c************************************************************
 
         parameter (maxres=10000)
 c Argument Declarations
-        integer cntcres(1000)     !Occluding residues
-        real respv(maxres)          !Residue Packing Value
-        real resos(maxres)          !Residue OS
+        integer cntcres(1000)
+        real respv(maxres)
+        real resos(maxres)
  	integer current,i
 
 c Local Declarations
-        real os,raylen          !occ surf and raylength
+        real os,raylen
  	logical found
 
         read(1,110)cntcres(i),os,raylen
@@ -268,8 +272,8 @@ c (Done only if working on current residue, not occluding res
 c	if (current .eq. 1) then
 c         found= .false.  
 c         call search(cntcres,cntcres(i),found)
-c         if(found) then      !If found this residue number
-c           j=j+1             !increase occ res counter
+c         if(found) then
+c           j=j+1
 c         end if
 c	end if
 

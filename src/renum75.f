@@ -13,17 +13,17 @@ c Declarations
        character fname*30, prompt*30
        integer num,onenum
 
-       fname = "temp1.cln"
+       fname = "temp1.pdb"
 
-c       prompt = "temp1.cln"
+c       prompt = "temp1.pdb"
 
 c       data prompt / 'PDB filename to be renumbered?' /
 
 c Open the current input and output files.
        call ask(1,fname,'old',prompt)
        open (unit=2,file='new.pdb',status='unknown')       
-       write(6,599)
-599    format('     Renumbered file is called new.pdb')
+c       write(6,599)
+c599    format('     Renumbered file is called new.pdb')
 
 c Read the current first residue number
        num=0

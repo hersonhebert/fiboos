@@ -16,6 +16,7 @@
 #' @importFrom bio3d get.pdb
 #' @importFrom bio3d read.pdb
 #' @importFrom bio3d write.pdb
+#' @importFrom readr read_file
 #'
 clean_pdb = function(pdb){
    if(!file.exists(pdb)){
@@ -24,12 +25,8 @@ clean_pdb = function(pdb){
        pdb = paste(pdb,".pdb",sep = "")
      }
    }
-  file.rename(pdb, "temp1.pdb")
-  cmd = system.file("scripts","clean.csh", package = "os")
-  cmd_1 = paste("chmod +x ",cmd, sep = "")
-  system(cmd_1)
-  system(cmd)
-  file.remove("temp1.pdb")
+  file.copy(pdb,"temp1.pdb")
+  clean("temp1.pdb")
   dyn.load(system.file("libs", "os.so", package = "os"))
   .Fortran("renum", PACKAGE = "os")
   file.rename("new.pdb", "temp.pdb")
@@ -44,5 +41,45 @@ clean_pdb = function(pdb){
   iresl = as.integer(pdb$atom$resno[length(pdb$atom$resno)])
   interval = c(iresf,iresl)
   dyn.unload(system.file("libs", "os.so", package = "os"))
+  file.remove("temp1.pdb")
   return(interval)
+}
+
+
+clean = function(name_file){
+   i = 0
+   l1 = c("B", "2", "L")
+   l2 = c("A","B","C","D","E","F","G","H","I")
+   l3 = c("A","1","U")
+   l4 = c("HOH","PMS","FOR","ALK","ANI")
+   t = FALSE
+   new_file = list()
+   name_new_file = "temp1.cln"
+   con = file(name_new_file,"w")
+   file = readLines(name_file)
+   for(line in file){
+     if(startsWith(line,"ATOM")){
+       if((substr(line,13,13)!="H")&&(substr(line,14,14)!="H")){
+         if(!(substr(line,17,17) %in% l1) && !(substr(line,27,27) %in% l2)){
+           if(substr(line,17,17) %in% l3){
+             line=paste(substr(line,1,16),substr(line,18,100))
+           }
+           for(item in l4){
+             if (item %in% line){
+               t=TRUE
+             }
+           }
+           if(i==0){
+             line=paste(substr(line,1,24)," 1",substr(line,27,100),sep="")
+             i = 1
+           }
+           if (t==FALSE){
+             writeLines(line,con)
+           }
+         }
+       }
+     }
+   }
+   writeLines("END",con)
+   close(con)
 }

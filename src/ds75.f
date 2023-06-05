@@ -3089,7 +3089,7 @@ cwrite(kanalz,'(a34)')'#SIMS: RESULT DOTS in Midas format'
 
         do id=dot_startn_atom(i),dot_startn_atom(i)+dot_num_atom(i)-1
         write(kanalz,'(a3,i5,2x,a3,f8.3,1x,f8.3,1x,f8.3,1x,
-     &     a2,i1, 1x,f6.3,1x,f6.3,1x,f6.3,1x,f6.3)')
+     &     a2,i1, 1x,f7.5,1x,f6.3,1x,f6.3,1x,f6.3)')
      &  resnamel(i),resnumbl(i),atnamel(i),(dotcrd(k,id),k=1,3),
      &  'ST',dot_ISHAPE(id), dotarea(id),(dotnrm(k,id),k=1,3)
 

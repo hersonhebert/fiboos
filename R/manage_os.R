@@ -39,7 +39,7 @@ occluded_surface = function(pdb, method){
   if(!(toupper(method) == "OS")&!(toupper(method) == "FIBOS")){
     stop("Wrong Method")
   }
-  execute(iresf, iresl, meth)
+  execute(1, iresl, meth)
   remove_files()
   return(read_OS("prot.srf"))
 }
