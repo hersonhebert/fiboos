@@ -19,8 +19,8 @@
 #' @importFrom readr read_file
 #'
 clean_pdb = function(pdb){
-   if(!file.exists(pdb)){
-     if(!grepl(".pdb","",pdb)){
+   if(!grepl(".pdb","",pdb)){
+     if (!file.exists(pdb)){
        bio3d::get.pdb(pdb)
        pdb = paste(pdb,".pdb",sep = "")
      }
@@ -72,6 +72,21 @@ clean = function(name_file){
            if(i==0){
              line=paste(substr(line,1,24)," 1",substr(line,27,100),sep="")
              i = 1
+           }
+           if("HSD" %in% line){
+             line = gsub("HSD","HIS",line)
+           }
+           if("HSE" %in% line){
+             line = gsub("HSE","HIS",line)
+           }
+           if("OT1" %in% line){
+             line = gsub("OT1","O",line)
+           }
+           if("OT2" %in% line){
+             line = gsub("OT2","OXT",line)
+           }
+           if("CD ILE" %in% line){
+             line = gsub("CD ILE","CD1 ILE",line)
            }
            if (t==FALSE){
              writeLines(line,con)

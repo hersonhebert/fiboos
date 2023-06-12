@@ -18,6 +18,7 @@
 #'
 #' @export
 occluded_surface = function(pdb, method){
+  print("Calculating...")
   meth = 0
   if(file.exists("prot.srf")){
     file.remove("prot.srf")

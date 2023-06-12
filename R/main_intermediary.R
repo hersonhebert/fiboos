@@ -39,9 +39,7 @@ execute = function(iresf, iresl, method){
   maxat = 50000
   dyn.load(system.file("libs", "os.so", package = "os"))
   main_75 = call_main(iresf, iresl, maxres, maxat)
-  bar_prog = txtProgressBar(min = 1, max=iresl,style = 3)
   for(ires in 1:(iresl)){
-    setTxtProgressBar(bar_prog,ires)
     intermediate = .Fortran("main_intermediate", main_75$x, main_75$y,
                             main_75$z, as.integer(ires), main_75$resnum,
                             main_75$natm, PACKAGE = "os")

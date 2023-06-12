@@ -1,15 +1,11 @@
 #' @title Respak Calcule
 #' @name respak
 #'
-#' @description The implemented function executes the implemented methods.
-#'              Using this function, it is possible to calculate occluded areas
-#'              through the traditional methodology, Occluded Surface, or by
-#'              applying the Fibonacci OS methodology. At the end of the method
-#'              execution, the "prot.srf" file is generated, and returned for
-#'              the function. The data in this file refers to all contacts
-#'              between atoms of molecules present in a protein's PDB.
+#' @description The OSP value is important for verifying the quality of the values
+#'              calculated by the developed package for calculating the contact
+#'                areas between the molecules of the analyzed protein.
 #'
-#' @param prot Prot File.
+#' @param prot Prot File (.srf).
 #'
 #' @seealso os::read_OS
 #' @seealso os::occluded_surface
@@ -22,8 +18,8 @@
 #' @author João Paulo Roquim Romanelli
 #'
 #' @export
-respak = function(){
-  if(file.exists("prot.srf")){
+respak = function(file){
+  if(file.exists(file)){
     dyn.load(system.file("libs", "os.so", package = "os"))
     .Fortran("respak", PACKAGE = "os")
     dyn.unload(system.file("libs", "os.so", package = "os"))

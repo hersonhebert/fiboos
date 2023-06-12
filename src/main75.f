@@ -103,7 +103,7 @@ c left in for future use.
 
        call read_coords (atype,restype,chain,resnum,nchains,
      &  aarestype,x,canum,natm,maxat,maxres,naa)
-        print*, 'naa = ', naa
+c        print*, 'naa = ', naa
 
 c Close pdb file
          close(unit=1)
@@ -440,7 +440,7 @@ c Start reading atoms
                  write(6,30)
                  goto 90
                else if (line(1:3) .eq. 'END') then
-                 write(6,35)
+c                 write(6,35)
                  goto 100
                else
                  goto 100
