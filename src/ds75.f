@@ -246,12 +246,13 @@ c assign Rad
 
 
 c do SIMS calculation:
-              IF(method .eq. 1)then
-                dotden_h=5.0
-              END IF
-              IF(method .eq. 2)then
-                dotden_h=5.0
-              END IF
+c              IF(method .eq. 1)then
+c                dotden_h=5.0
+c              END IF
+c              IF(method .eq. 2)then
+c                dotden_h=5.0
+c              END IF
+              dotden_h=5.0
               dotden=dotden_h
               rp_rpr=1.4
               d_probe=rp_rpr*2.0d0
@@ -3089,7 +3090,7 @@ cwrite(kanalz,'(a34)')'#SIMS: RESULT DOTS in Midas format'
 
         do id=dot_startn_atom(i),dot_startn_atom(i)+dot_num_atom(i)-1
         write(kanalz,'(a3,i5,2x,a3,f8.3,1x,f8.3,1x,f8.3,1x,
-     &     a2,i1, 1x,f7.5,1x,f6.3,1x,f6.3,1x,f6.3)')
+     &     a2,i1, 1x,f6.3,1x,f6.3,1x,f6.3,1x,f6.3)')
      &  resnamel(i),resnumbl(i),atnamel(i),(dotcrd(k,id),k=1,3),
      &  'ST',dot_ISHAPE(id), dotarea(id),(dotnrm(k,id),k=1,3)
 

@@ -41,7 +41,7 @@ occluded_surface = function(pdb, method){
     stop("Wrong Method")
   }
   execute(1, iresl, meth)
-  remove_files()
+ # remove_files()
   return(read_OS("prot.srf"))
 }
 

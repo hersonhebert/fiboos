@@ -59,7 +59,7 @@ clean = function(name_file){
    file = readLines(name_file)
    for(line in file){
      if(startsWith(line,"ATOM")){
-       if((substr(line,13,13)!="H")&&(substr(line,14,14)!="H")){
+       if((substr(line,13,13)!="H")&&(substr(line,14,14)!="H")&&(substr(line,14,16)!="OXT")&&(substr(line,14,15)!="2H")&&(substr(line,14,15)!="3H")&&(substr(line,14,14)!="D")&&(substr(line,13,13)!="D")){
          if(!(substr(line,17,17) %in% l1) && !(substr(line,27,27) %in% l2)){
            if(substr(line,17,17) %in% l3){
              line=paste(substr(line,1,16),substr(line,18,100))
