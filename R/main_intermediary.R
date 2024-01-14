@@ -14,13 +14,14 @@
 #' @param maxres Maximum number of residues.
 #' @param maxat Maximum number of atoms.
 #'
-#' @seealso os::read_OS
+#' @seealso [read_prot()]
 #'
 #' @importFrom stats rnorm
 #'
 #' @author Carlos Henrique da Silveira
 #' @author Herson Hebert Mendes Soares
 #' @author João Paulo Roquim Romanelli
+#' @author Patrick Fleming
 
 #'
 call_main = function(iresf, iresl, maxres, maxat){
@@ -30,26 +31,26 @@ call_main = function(iresf, iresl, maxres, maxat){
   z = double(maxat)
   main_75 = .Fortran("main", resnum = as.integer(resnum), natm = as.integer(0),
                      x=as.double(rnorm(maxat)) ,y = as.double(rnorm(maxat)),
-                     z = as.double(rnorm(maxat)), iresf, iresl, PACKAGE = "os")
+                     z = as.double(rnorm(maxat)), iresf, iresl, PACKAGE = "fibos")
   return(main_75)
 }
 
 execute = function(iresf, iresl, method){
   maxres = 10000
   maxat = 50000
-  dyn.load(system.file("libs", "os.so", package = "os"))
+  dyn.load(system.file("libs", "fibos.so", package = "fibos"))
   main_75 = call_main(iresf, iresl, maxres, maxat)
   for(ires in 1:(iresl)){
     intermediate = .Fortran("main_intermediate", main_75$x, main_75$y,
                             main_75$z, as.integer(ires), main_75$resnum,
-                            main_75$natm, PACKAGE = "os")
+                            main_75$natm, PACKAGE = "fibos")
     .Fortran("main_intermediate01",x=as.double(rnorm(maxat)),
              y = as.double(rnorm(maxat)),
              z = as.double(rnorm(maxat)), as.integer(ires), main_75$resnum,
-             main_75$natm, PACKAGE = "os")
-    .Fortran("runSIMS", PACKAGE = "os", as.integer(method))
-    .Fortran("surfcal", PACKAGE = "os")
+             main_75$natm, PACKAGE = "fibos")
+    .Fortran("runSIMS", PACKAGE = "fibos", as.integer(method))
+    .Fortran("surfcal", PACKAGE = "fibos")
   }
-  .Fortran("main_intermediate02", as.integer(method),PACKAGE = "os")
-  dyn.unload(system.file("libs", "os.so", package = "os"))
+  .Fortran("main_intermediate02", as.integer(method),PACKAGE = "fibos")
+  dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
 }

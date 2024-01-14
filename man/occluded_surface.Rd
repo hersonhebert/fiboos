@@ -19,7 +19,7 @@ a surface is occluded based on tests with a probe, which is
 typically the water molecule.
 }
 \seealso{
-\code{\link[=read_OS]{read_OS()}}
+\code{\link[=read_prot]{read_prot()}}
 }
 \author{
 Carlos Henrique da Silveira
@@ -27,4 +27,6 @@ Carlos Henrique da Silveira
 Herson Hebert Mendes Soares
 
 João Paulo Roquim Romanelli
+
+Patrick Fleming
 }

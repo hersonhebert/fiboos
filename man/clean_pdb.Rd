@@ -22,4 +22,6 @@ Carlos Henrique da Silveira
 Herson Hebert Mendes Soares
 
 João Paulo Roquim Romanelli
+
+Patrick Fleming
 }

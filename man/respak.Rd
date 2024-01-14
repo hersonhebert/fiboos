@@ -7,7 +7,7 @@
 respak(file)
 }
 \arguments{
-\item{prot}{Prot File (.srf).}
+\item{file}{Prot File (.srf).}
 }
 \description{
 The OSP value is important for verifying the quality of the values
@@ -15,9 +15,9 @@ calculated by the developed package for calculating the contact
 areas between the molecules of the analyzed protein.
 }
 \seealso{
-os::read_OS
+\code{\link[=read_prot]{read_prot()}}
 
-os::occluded_surface
+\code{\link[=occluded_surface]{occluded_surface()}}
 }
 \author{
 Carlos Henrique da Silveira
@@ -25,4 +25,6 @@ Carlos Henrique da Silveira
 Herson Hebert Mendes Soares
 
 João Paulo Roquim Romanelli
+
+Patrick Fleming
 }

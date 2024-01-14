@@ -1,5 +1,5 @@
 #' @title Prot Reading
-#' @name read_OS
+#' @name read_prot
 #'
 #' @description It is crucial to read and manipulate the data of the occluded
 #'              surfaces that were calculated. Through the results, it is
@@ -18,6 +18,7 @@
 #' @author Carlos Henrique da Silveira
 #' @author Herson Hebert Mendes Soares
 #' @author João Paulo Roquim Romanelli
+#' @author Patrick Fleming
 #'
 #'
 #' @importFrom readr read_fwf
@@ -28,7 +29,7 @@
 #'
 #' @export
 
-read_OS = function(file){
+read_prot = function(file){
   dado = read_fwf(file)
   dado = filter(dado, X1 == "INF")
   dado$X7 = NULL

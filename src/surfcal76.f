@@ -112,6 +112,7 @@ c if 0, no ray file, if 1, write ray display file
         open(unit=kanal,file='part.inp',status='old')
 
         read(kanal,"(a)")rayflag
+        rayflag = 1
 
 	i = 1		!counter for reading part.inp
 c now read the second line. this will be

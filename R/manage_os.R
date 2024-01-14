@@ -10,11 +10,12 @@
 #' @param pdb Input containing only the name of the 4-digit PDB file, the file will be obtained online. If there is an extension ".pdb" or full path, the file will be obtained locally.
 #' @param method Method to be used: OS or FIBOS
 #'
-#' @seealso [read_OS()]
+#' @seealso [read_prot()]
 #'
 #' @author Carlos Henrique da Silveira
 #' @author Herson Hebert Mendes Soares
 #' @author João Paulo Roquim Romanelli
+#' @author Patrick Fleming
 #'
 #' @export
 occluded_surface = function(pdb, method){
@@ -26,7 +27,7 @@ occluded_surface = function(pdb, method){
   if(file.exists("temp.pdb")){
     file.remove("temp.pdb")
   }
-  path = system.file("extdata", "radii", package = "os")
+  path = system.file("extdata", "radii", package = "fibos")
   file.copy(from = path, to = getwd())
   interval = clean_pdb(pdb)
   iresf = interval[1]
@@ -41,8 +42,8 @@ occluded_surface = function(pdb, method){
     stop("Wrong Method")
   }
   execute(1, iresl, meth)
- # remove_files()
-  return(read_OS("prot.srf"))
+  remove_files()
+  return(read_prot("prot.srf"))
 }
 
 remove_files = function(){

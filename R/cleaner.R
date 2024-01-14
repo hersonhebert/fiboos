@@ -12,6 +12,7 @@
 #' @author Carlos Henrique da Silveira
 #' @author Herson Hebert Mendes Soares
 #' @author João Paulo Roquim Romanelli
+#' @author Patrick Fleming
 #'
 #' @importFrom bio3d get.pdb
 #' @importFrom bio3d read.pdb
@@ -19,7 +20,7 @@
 #' @importFrom readr read_file
 #'
 clean_pdb = function(pdb){
-   if(!grepl(".pdb","",pdb)){
+   if(!grepl(".pdb",pdb)){
      if (!file.exists(pdb)){
        bio3d::get.pdb(pdb)
        pdb = paste(pdb,".pdb",sep = "")
@@ -27,8 +28,8 @@ clean_pdb = function(pdb){
    }
   file.copy(pdb,"temp1.pdb")
   clean("temp1.pdb")
-  dyn.load(system.file("libs", "os.so", package = "os"))
-  .Fortran("renum", PACKAGE = "os")
+  dyn.load(system.file("libs", "fibos.so", package = "fibos"))
+  .Fortran("renum", PACKAGE = "fibos")
   file.rename("new.pdb", "temp.pdb")
   file.remove("temp1.cln")
   pdb = bio3d::read.pdb("temp.pdb")
@@ -40,7 +41,7 @@ clean_pdb = function(pdb){
   iresf = as.integer(pdb$atom$resno[1])
   iresl = as.integer(pdb$atom$resno[length(pdb$atom$resno)])
   interval = c(iresf,iresl)
-  dyn.unload(system.file("libs", "os.so", package = "os"))
+  dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
   file.remove("temp1.pdb")
   return(interval)
 }

@@ -26,7 +26,7 @@ the function. The data in this file refers to all contacts
 between atoms of molecules present in a protein's PDB.
 }
 \seealso{
-os::read_OS
+\code{\link[=read_prot]{read_prot()}}
 }
 \author{
 Carlos Henrique da Silveira
@@ -34,4 +34,6 @@ Carlos Henrique da Silveira
 Herson Hebert Mendes Soares
 
 João Paulo Roquim Romanelli
+
+Patrick Fleming
 }
