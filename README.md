@@ -23,6 +23,10 @@ Note: These additional libraries are also required:
   * stringr
   * tidyr
 
+#### Required Operating System
+   
+* Ubuntu version >= 20.04
+
 ## How use
 ### Installing the Package
 
