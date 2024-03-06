@@ -18,7 +18,8 @@
 #' @author Patrick Fleming
 #'
 #' @export
-occluded_surface = function(pdb, method){
+occluded_surface = function(pdb, method = "FIBOS"){
+  create_folder()
   print("Calculating...")
   meth = 0
   if(file.exists("prot.srf")){
@@ -26,6 +27,12 @@ occluded_surface = function(pdb, method){
   }
   if(file.exists("temp.pdb")){
     file.remove("temp.pdb")
+  }
+  if(grepl(".pdb", pdb) ==  FALSE){
+    arq_aux = paste(pdb,".pdb", sep = "")
+    if(file.exists(arq_aux)){
+      file.remove(arq_aux)
+    }
   }
   path = system.file("extdata", "radii", package = "fibos")
   file.copy(from = path, to = getwd())
@@ -43,7 +50,21 @@ occluded_surface = function(pdb, method){
   }
   execute(1, iresl, meth)
   remove_files()
-  return(read_prot("prot.srf"))
+  change_files(pdb)
+  if (grepl(".pdb",pdb)){
+    name_prot = gsub(".pdb","", pdb)
+    name_prot = paste("prot_",name_prot,".srf",sep = "")
+  } else{
+    name_prot = paste("prot_",pdb,".srf", sep = "")
+  }
+  if (grepl(".pdb",pdb)){
+    name_ray = gsub(".pdb","", pdb)
+    name_ray = paste("prot_",name_ray,".srf",sep = "")
+  } else{
+    name_ray = paste("prot_",pdb,".srf", sep = "")
+  }
+  result = list(read_prot(name_prot), respak(name_ray))
+  return(result)
 }
 
 remove_files = function(){
@@ -56,5 +77,6 @@ remove_files = function(){
   file.remove("file.srf")
   file.remove("fort.6")
   file.remove("part_i.pdb", "part_v.pdb")
+  file.remove("temp.pdb")
 }
 

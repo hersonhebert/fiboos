@@ -20,14 +20,23 @@
 #'
 #' @export
 respak = function(file){
+  name = file
   if(file.exists(file)){
+    if(file!="prot.srf"){
+      file.rename(file,"prot.srf")
+      file = "prot.srf"
+    }
     dyn.load(system.file("libs", "fibos.so", package = "fibos"))
     .Fortran("respak", PACKAGE = "fibos")
     dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
     osp = readr::read_table("prot.pak")
+    file = gsub(".srf","",name)
+    file = paste(file,".pak",sep = "")
+    file.rename("prot.srf",name)
+    file.rename("prot.pak",file)
     return(osp)
   }
   else{
-    print("Prot not Found.")
+    return(NULL)
   }
 }
