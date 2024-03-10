@@ -12,10 +12,10 @@
 create_folder = function(){
   if(!file.exists("fibos_files") & basename(getwd())!="fibos_files"){
     dir.create("fibos_files")
-    setwd("fibos_files/")
+    setwd("fibos_files")
   }
   if(basename(getwd())!="fibos_files" & file.exists("fibos_files")){
-    setwd("fibos_files/")
+    setwd("fibos_files")
   }
 }
 
