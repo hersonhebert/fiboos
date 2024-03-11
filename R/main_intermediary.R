@@ -41,9 +41,8 @@ execute = function(iresf, iresl, method){
   system_arch = Sys.info()
   if(system_arch["sysname"] == "Linux"){
     dyn.load(system.file("libs", "fibos.so", package = "fibos"))
-  }
-  else if(system_arch == "Windows"){
-    if(system_arch[machine == "x64"]){
+  } else if(system_arch["sysname"] == "Windows"){
+    if(system_arch["machine"] == "x86-64"){
       dyn.load(system.file("libs/x64", "fibos.dll", package = "fibos"))
     }
     else{
