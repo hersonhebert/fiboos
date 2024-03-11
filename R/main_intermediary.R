@@ -38,7 +38,18 @@ call_main = function(iresf, iresl, maxres, maxat){
 execute = function(iresf, iresl, method){
   maxres = 10000
   maxat = 50000
-  dyn.load(system.file("libs", "fibos.so", package = "fibos"))
+  system_arch = Sys.info()
+  if(system_arch["sysname"] == "Linux"){
+    dyn.load(system.file("libs", "fibos.so", package = "fibos"))
+  }
+  else if(system_arch == "Windows"){
+    if(system_arch[machine == "x64"]){
+      dyn.load(system.file("libs/x64", "fibos.dll", package = "fibos"))
+    }
+    else{
+      dyn.load(system.file("libs/x86", "fibos.dll", package = "fibos"))
+    }
+  }
   main_75 = call_main(iresf, iresl, maxres, maxat)
   for(ires in 1:(iresl)){
     intermediate = .Fortran("main_intermediate", main_75$x, main_75$y,
