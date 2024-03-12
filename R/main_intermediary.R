@@ -61,5 +61,13 @@ execute = function(iresf, iresl, method){
     .Fortran("surfcal", PACKAGE = "fibos")
   }
   .Fortran("main_intermediate02", as.integer(method),PACKAGE = "fibos")
-  dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
+  if(system_arch["sysname"] == "Linux"){
+    dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
+  } else if(system_arch["sysname"] == "Windows"){
+    if(system_arch["machine"] == "x86-64"){
+      dyn.unload(system.file("libs/x64", "fibos.dll", package = "fibos"))
+    } else{
+      dyn.unload(system.file("libs/x86", "fibos.dll", package = "fibos"))
+    }
+  }
 }
