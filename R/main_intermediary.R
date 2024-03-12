@@ -44,8 +44,7 @@ execute = function(iresf, iresl, method){
   } else if(system_arch["sysname"] == "Windows"){
     if(system_arch["machine"] == "x86-64"){
       dyn.load(system.file("libs/x64", "fibos.dll", package = "fibos"))
-    }
-    else{
+    } else{
       dyn.load(system.file("libs/x86", "fibos.dll", package = "fibos"))
     }
   }
