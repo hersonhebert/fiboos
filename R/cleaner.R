@@ -28,7 +28,16 @@ clean_pdb = function(pdb){
    }
   file.copy(pdb,"temp1.pdb")
   clean("temp1.pdb")
-  dyn.load(system.file("libs", "fibos.so", package = "fibos"))
+  system_arch = Sys.info()
+  if(system_arch["sysname"] == "Linux"){
+    dyn.load(system.file("libs", "fibos.so", package = "fibos"))
+  } else if(system_arch["sysname"] == "Windows"){
+    if(system_arch["machine"] == "x86-64"){
+      dyn.load(system.file("libs/x64", "fibos.dll", package = "fibos"))
+    } else{
+      dyn.load(system.file("libs/x86", "fibos.dll", package = "fibos"))
+    }
+  }
   .Fortran("renum", PACKAGE = "fibos")
   file.rename("new.pdb", "temp.pdb")
   file.remove("temp1.cln")
@@ -41,7 +50,15 @@ clean_pdb = function(pdb){
   iresf = as.integer(pdb$atom$resno[1])
   iresl = as.integer(pdb$atom$resno[length(pdb$atom$resno)])
   interval = c(iresf,iresl)
-  dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
+  if(system_arch["sysname"] == "Linux"){
+    dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
+  } else if(system_arch["sysname"] == "Windows"){
+    if(system_arch["machine"] == "x86-64"){
+      dyn.unload(system.file("libs/x64", "fibos.dll", package = "fibos"))
+    } else{
+      dyn.unload(system.file("libs/x86", "fibos.dll", package = "fibos"))
+    }
+  }
   file.remove("temp1.pdb")
   return(interval)
 }
