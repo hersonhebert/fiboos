@@ -26,9 +26,25 @@ respak = function(file){
       file.rename(file,"prot.srf")
       file = "prot.srf"
     }
-    dyn.load(system.file("libs", "fibos.so", package = "fibos"))
+    if(system_arch_1["sysname"] == "Linux"){
+      dyn.load(system.file("libs", "fibos.so", package = "fibos"))
+    } else if(system_arch_1["sysname"] == "Windows"){
+      if(system_arch_1["machine"] == "x86-64"){
+        dyn.load(system.file("libs/x64", "fibos.dll", package = "fibos"))
+      } else{
+        dyn.load(system.file("libs/x86", "fibos.dll", package = "fibos"))
+      }
+    }
     .Fortran("respak", PACKAGE = "fibos")
-    dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
+    if(system_arch_1["sysname"] == "Linux"){
+      dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
+    } else if(system_arch_1["sysname"] == "Windows"){
+      if(system_arch_1["machine"] == "x86-64"){
+        dyn.unload(system.file("libs/x64", "fibos.dll", package = "fibos"))
+      } else{
+        dyn.unload(system.file("libs/x86", "fibos.dll", package = "fibos"))
+      }
+    }
     osp = readr::read_table("prot.pak")
     file = gsub(".srf","",name)
     file = paste(file,".pak",sep = "")
