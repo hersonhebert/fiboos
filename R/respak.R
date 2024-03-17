@@ -26,6 +26,7 @@ respak = function(file){
       file.rename(file,"prot.srf")
       file = "prot.srf"
     }
+    system_arch_1 = Sys.info()
     if(system_arch_1["sysname"] == "Linux"){
       dyn.load(system.file("libs", "fibos.so", package = "fibos"))
     } else if(system_arch_1["sysname"] == "Windows"){
