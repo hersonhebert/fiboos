@@ -20,13 +20,17 @@ typically the water molecule.
 }
 \seealso{
 \code{\link[=read_prot]{read_prot()}}
+
+\code{\link[=read_osp]{read_osp()}}
+
+\code{\link[=osp]{osp()}}
 }
 \author{
-Carlos Henrique da Silveira
+Carlos Henrique da Silveira (carlos.silveira@unifei.edu.br)
 
-Herson Hebert Mendes Soares
+Herson Hebert Mendes Soares (hersonhebert@hotmail.com)
 
-João Paulo Roquim Romanelli
+João Paulo Roquim Romanelli (joaoromanelli@unifei.edu.br)
 
-Patrick Fleming
+Patrick Fleming (Pat.Fleming@jhu.edu)
 }

@@ -17,11 +17,11 @@ areas. In addition, the residues and their atoms are renumbered
 to perform the area calculations.
 }
 \author{
-Carlos Henrique da Silveira
+Carlos Henrique da Silveira (carlos.silveira@unifei.edu.br)
 
-Herson Hebert Mendes Soares
+Herson Hebert Mendes Soares (hersonhebert@hotmail.com)
 
-João Paulo Roquim Romanelli
+João Paulo Roquim Romanelli (joaoromanelli@unifei.edu.br)
 
-Patrick Fleming
+Patrick Fleming (Pat.Fleming@jhu.edu)
 }

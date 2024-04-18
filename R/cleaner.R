@@ -9,10 +9,10 @@
 #'
 #' @param pdb Input containing only the name of the 4-digit PDB file, the file will be obtained online. If there is an extension ".pdb" or full path, the file will be obtained locally.
 #'
-#' @author Carlos Henrique da Silveira
-#' @author Herson Hebert Mendes Soares
-#' @author João Paulo Roquim Romanelli
-#' @author Patrick Fleming
+#' @author Carlos Henrique da Silveira (carlos.silveira@unifei.edu.br)
+#' @author Herson Hebert Mendes Soares (hersonhebert@hotmail.com)
+#' @author João Paulo Roquim Romanelli (joaoromanelli@unifei.edu.br)
+#' @author Patrick Fleming (Pat.Fleming@jhu.edu)
 #'
 #' @importFrom bio3d get.pdb
 #' @importFrom bio3d read.pdb
@@ -30,15 +30,15 @@ clean_pdb = function(pdb){
   clean("temp1.pdb")
   system_arch_1 = Sys.info()
   if(system_arch_1["sysname"] == "Linux"){
-    dyn.load(system.file("libs", "fibos.so", package = "fibos"))
+    dyn.load(system.file("libs", "FIBOS.so", package = "FIBOS"))
   } else if(system_arch_1["sysname"] == "Windows"){
     if(system_arch_1["machine"] == "x86-64"){
-      dyn.load(system.file("libs/x64", "fibos.dll", package = "fibos"))
+      dyn.load(system.file("libs/x64", "FIBOS.dll", package = "FIBOS"))
     } else{
-      dyn.load(system.file("libs/x86", "fibos.dll", package = "fibos"))
+      dyn.load(system.file("libs/x86", "FIBOS.dll", package = "FIBOS"))
     }
   }
-  .Fortran("renum", PACKAGE = "fibos")
+  .Fortran("renum", PACKAGE = "FIBOS")
   file.rename("new.pdb", "temp.pdb")
   file.remove("temp1.cln")
   pdb = bio3d::read.pdb("temp.pdb")
@@ -51,12 +51,12 @@ clean_pdb = function(pdb){
   iresl = as.integer(pdb$atom$resno[length(pdb$atom$resno)])
   interval = c(iresf,iresl)
   if(system_arch_1["sysname"] == "Linux"){
-    dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
+    dyn.unload(system.file("libs", "FIBOS.so", package = "FIBOS"))
   } else if(system_arch_1["sysname"] == "Windows"){
     if(system_arch_1["machine"] == "x86-64"){
-      dyn.unload(system.file("libs/x64", "fibos.dll", package = "fibos"))
+      dyn.unload(system.file("libs/x64", "FIBOS.dll", package = "FIBOS"))
     } else{
-      dyn.unload(system.file("libs/x86", "fibos.dll", package = "fibos"))
+      dyn.unload(system.file("libs/x86", "FIBOS.dll", package = "FIBOS"))
     }
   }
   file.remove("temp1.pdb")

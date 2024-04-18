@@ -11,30 +11,30 @@
 #' @param method Method to be used: OS or FIBOS
 #'
 #' @seealso [read_prot()]
+#' @seealso [read_osp()]
+#' @seealso [osp()]
 #'
-#' @author Carlos Henrique da Silveira
-#' @author Herson Hebert Mendes Soares
-#' @author João Paulo Roquim Romanelli
-#' @author Patrick Fleming
+#' @author Carlos Henrique da Silveira (carlos.silveira@unifei.edu.br)
+#' @author Herson Hebert Mendes Soares (hersonhebert@hotmail.com)
+#' @author João Paulo Roquim Romanelli (joaoromanelli@unifei.edu.br)
+#' @author Patrick Fleming (Pat.Fleming@jhu.edu)
 #'
 #' @export
 occluded_surface = function(pdb, method = "FIBOS"){
   create_folder()
-  print("Calculating...")
   meth = 0
-  if(file.exists("prot.srf")){
-    file.remove("prot.srf")
-  }
-  if(file.exists("temp.pdb")){
-    file.remove("temp.pdb")
-  }
   if(grepl(".pdb", pdb) ==  FALSE){
     arq_aux = paste(pdb,".pdb", sep = "")
     if(file.exists(arq_aux)){
       file.remove(arq_aux)
     }
   }
-  path = system.file("extdata", "radii", package = "fibos")
+  else{
+    if(file.exists(pdb) == FALSE){
+      stop("File not Found: ", pdb)
+    }
+  }
+  path = system.file("extdata", "radii", package = "FIBOS")
   file.copy(from = path, to = getwd())
   interval = clean_pdb(pdb)
   iresf = interval[1]
@@ -50,21 +50,8 @@ occluded_surface = function(pdb, method = "FIBOS"){
   }
   execute(1, iresl, meth)
   remove_files()
-  change_files(pdb)
-  if (grepl(".pdb",pdb)){
-    name_prot = gsub(".pdb","", pdb)
-    name_prot = paste("prot_",name_prot,".srf",sep = "")
-  } else{
-    name_prot = paste("prot_",pdb,".srf", sep = "")
-  }
-  if (grepl(".pdb",pdb)){
-    name_ray = gsub(".pdb","", pdb)
-    name_ray = paste("prot_",name_ray,".srf",sep = "")
-  } else{
-    name_ray = paste("prot_",pdb,".srf", sep = "")
-  }
-  result = list(read_prot(name_prot), respak(name_ray))
-  return(result)
+  pdb_name = change_files(pdb)
+  return(read_prot(pdb_name))
 }
 
 remove_files = function(){
@@ -78,5 +65,6 @@ remove_files = function(){
   file.remove("fort.6")
   file.remove("part_i.pdb", "part_v.pdb")
   file.remove("temp.pdb")
+  file.remove("radii")
 }
 

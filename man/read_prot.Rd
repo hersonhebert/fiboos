@@ -23,13 +23,17 @@ located."
 }
 \seealso{
 \code{\link[=occluded_surface]{occluded_surface()}}
+
+\code{\link[=osp]{osp()}}
+
+\code{\link[=read_osp]{read_osp()}}
 }
 \author{
-Carlos Henrique da Silveira
+Carlos Henrique da Silveira (carlos.silveira@unifei.edu.br)
 
-Herson Hebert Mendes Soares
+Herson Hebert Mendes Soares (hersonhebert@hotmail.com)
 
-João Paulo Roquim Romanelli
+João Paulo Roquim Romanelli (joaoromanelli@unifei.edu.br)
 
-Patrick Fleming
+Patrick Fleming (Pat.Fleming@jhu.edu)
 }

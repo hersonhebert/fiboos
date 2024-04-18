@@ -15,13 +15,15 @@
 #' @param maxat Maximum number of atoms.
 #'
 #' @seealso [read_prot()]
+#' @seealso [read_osp()]
+#' @seealso [occluded_surface()]
 #'
 #' @importFrom stats rnorm
 #'
-#' @author Carlos Henrique da Silveira
-#' @author Herson Hebert Mendes Soares
-#' @author João Paulo Roquim Romanelli
-#' @author Patrick Fleming
+#' @author Carlos Henrique da Silveira (carlos.silveira@unifei.edu.br)
+#' @author Herson Hebert Mendes Soares (hersonhebert@hotmail.com)
+#' @author João Paulo Roquim Romanelli (joaoromanelli@unifei.edu.br)
+#' @author Patrick Fleming (Pat.Fleming@jhu.edu)
 
 #'
 call_main = function(iresf, iresl, maxres, maxat){
@@ -31,7 +33,7 @@ call_main = function(iresf, iresl, maxres, maxat){
   z = double(maxat)
   main_75 = .Fortran("main", resnum = as.integer(resnum), natm = as.integer(0),
                      x=as.double(rnorm(maxat)) ,y = as.double(rnorm(maxat)),
-                     z = as.double(rnorm(maxat)), iresf, iresl, PACKAGE = "fibos")
+                     z = as.double(rnorm(maxat)), iresf, iresl, PACKAGE = "FIBOS")
   return(main_75)
 }
 
@@ -40,34 +42,34 @@ execute = function(iresf, iresl, method){
   maxat = 50000
   system_arch = Sys.info()
   if(system_arch["sysname"] == "Linux"){
-    dyn.load(system.file("libs", "fibos.so", package = "fibos"))
+    dyn.load(system.file("libs", "FIBOS.so", package = "FIBOS"))
   } else if(system_arch["sysname"] == "Windows"){
     if(system_arch["machine"] == "x86-64"){
-      dyn.load(system.file("libs/x64", "fibos.dll", package = "fibos"))
+      dyn.load(system.file("libs/x64", "FIBOS.dll", package = "FIBOS"))
     } else{
-      dyn.load(system.file("libs/x86", "fibos.dll", package = "fibos"))
+      dyn.load(system.file("libs/x86", "FIBOS.dll", package = "FIBOS"))
     }
   }
   main_75 = call_main(iresf, iresl, maxres, maxat)
   for(ires in 1:(iresl)){
     intermediate = .Fortran("main_intermediate", main_75$x, main_75$y,
                             main_75$z, as.integer(ires), main_75$resnum,
-                            main_75$natm, PACKAGE = "fibos")
+                            main_75$natm, PACKAGE = "FIBOS")
     .Fortran("main_intermediate01",x=as.double(rnorm(maxat)),
              y = as.double(rnorm(maxat)),
              z = as.double(rnorm(maxat)), as.integer(ires), main_75$resnum,
-             main_75$natm, PACKAGE = "fibos")
-    .Fortran("runSIMS", PACKAGE = "fibos", as.integer(method))
-    .Fortran("surfcal", PACKAGE = "fibos")
+             main_75$natm, PACKAGE = "FIBOS")
+    .Fortran("runSIMS", PACKAGE = "FIBOS", as.integer(method))
+    .Fortran("surfcal", PACKAGE = "FIBOS")
   }
-  .Fortran("main_intermediate02", as.integer(method),PACKAGE = "fibos")
+  .Fortran("main_intermediate02", as.integer(method),PACKAGE = "FIBOS")
   if(system_arch["sysname"] == "Linux"){
-    dyn.unload(system.file("libs", "fibos.so", package = "fibos"))
+    dyn.unload(system.file("libs", "FIBOS.so", package = "FIBOS"))
   } else if(system_arch["sysname"] == "Windows"){
     if(system_arch["machine"] == "x86-64"){
-      dyn.unload(system.file("libs/x64", "fibos.dll", package = "fibos"))
+      dyn.unload(system.file("libs/x64", "FIBOS.dll", package = "FIBOS"))
     } else{
-      dyn.unload(system.file("libs/x86", "fibos.dll", package = "fibos"))
+      dyn.unload(system.file("libs/x86", "FIBOS.dll", package = "FIBOS"))
     }
   }
 }

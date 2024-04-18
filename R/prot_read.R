@@ -14,11 +14,13 @@
 #'          located."
 #'
 #' @seealso [occluded_surface()]
+#' @seealso [osp()]
+#' @seealso [read_osp()]
 #'
-#' @author Carlos Henrique da Silveira
-#' @author Herson Hebert Mendes Soares
-#' @author João Paulo Roquim Romanelli
-#' @author Patrick Fleming
+#' @author Carlos Henrique da Silveira (carlos.silveira@unifei.edu.br)
+#' @author Herson Hebert Mendes Soares (hersonhebert@hotmail.com)
+#' @author João Paulo Roquim Romanelli (joaoromanelli@unifei.edu.br)
+#' @author Patrick Fleming (Pat.Fleming@jhu.edu)
 #'
 #'
 #' @importFrom readr read_fwf
