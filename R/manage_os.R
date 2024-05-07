@@ -21,6 +21,7 @@
 #'
 #' @export
 occluded_surface = function(pdb, method = "FIBOS"){
+  remove_files()
   create_folder()
   meth = 0
   if(grepl(".pdb", pdb) ==  FALSE){
@@ -56,15 +57,36 @@ occluded_surface = function(pdb, method = "FIBOS"){
 
 remove_files = function(){
   files_list = dir(pattern = ".ms")
-  file.remove(files_list)
+  if(length(files_list)>0){
+    file.remove(files_list)
+    files_list = NULL
+  }
   files_list = dir(pattern = ".inp")
-  file.remove(files_list)
+  if(length(files_list)>0){
+    file.remove(files_list)
+    files_list = NULL
+  }
   files_list = dir(pattern = ".txt")
-  file.remove(files_list)
-  file.remove("file.srf")
-  file.remove("fort.6")
-  file.remove("part_i.pdb", "part_v.pdb")
-  file.remove("temp.pdb")
-  file.remove("radii")
+  if(length(files_list)>0){
+    file.remove(files_list)
+    files_list = NULL
+  }
+  if(file.exists("file.srf")){
+    file.remove("file.srf")
+  }
+  if(file.exists("fort.6")){
+    file.remove("fort.6")
+  }
+  if(file.exists("part_i.pdb")){
+    file.remove("part_i.pdb")
+  }
+  if(file.exists("part_v.pdb")){
+    file.remove("part_v.pdb")
+  }
+  if(file.exists("temp.pdb")){
+    file.remove("temp.pdb")
+  }
+  if(file.exists("radii")){
+    file.remove("radii")
+  }
 }
-
