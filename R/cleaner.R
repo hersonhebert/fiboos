@@ -29,7 +29,7 @@ clean_pdb = function(pdb){
   file.copy(pdb,"temp1.pdb")
   clean("temp1.pdb")
   system_arch_1 = Sys.info()
-  if(system_arch_1["sysname"] == "Linux"){
+  if(system_arch_1["sysname"] == "Linux"||system_arch_1["sysname"] == "Darwin"){
     dyn.load(system.file("libs", "FIBOS.so", package = "FIBOS"))
   } else if(system_arch_1["sysname"] == "Windows"){
     if(system_arch_1["machine"] == "x86-64"){
@@ -50,7 +50,7 @@ clean_pdb = function(pdb){
   iresf = as.integer(pdb$atom$resno[1])
   iresl = as.integer(pdb$atom$resno[length(pdb$atom$resno)])
   interval = c(iresf,iresl)
-  if(system_arch_1["sysname"] == "Linux"){
+  if(system_arch_1["sysname"] == "Linux"||system_arch_1["sysname"] == "Darwin"){
     dyn.unload(system.file("libs", "FIBOS.so", package = "FIBOS"))
   } else if(system_arch_1["sysname"] == "Windows"){
     if(system_arch_1["machine"] == "x86-64"){

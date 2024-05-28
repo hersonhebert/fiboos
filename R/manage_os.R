@@ -56,17 +56,17 @@ occluded_surface = function(pdb, method = "FIBOS"){
 }
 
 remove_files = function(){
-  files_list = dir(pattern = ".ms")
+  files_list = dir(pattern = "\\.ms")
   if(length(files_list)>0){
     file.remove(files_list)
     files_list = NULL
   }
-  files_list = dir(pattern = ".inp")
+  files_list = dir(pattern = "\\.inp")
   if(length(files_list)>0){
     file.remove(files_list)
     files_list = NULL
   }
-  files_list = dir(pattern = ".txt")
+  files_list = dir(pattern = "\\.txt")
   if(length(files_list)>0){
     file.remove(files_list)
     files_list = NULL

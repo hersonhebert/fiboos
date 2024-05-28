@@ -41,7 +41,7 @@ execute = function(iresf, iresl, method){
   maxres = 10000
   maxat = 50000
   system_arch = Sys.info()
-  if(system_arch["sysname"] == "Linux"){
+  if(system_arch["sysname"] == "Linux" || system_arch["sysname"] == "Darwin"){
     dyn.load(system.file("libs", "FIBOS.so", package = "FIBOS"))
   } else if(system_arch["sysname"] == "Windows"){
     if(system_arch["machine"] == "x86-64"){
@@ -63,7 +63,7 @@ execute = function(iresf, iresl, method){
     .Fortran("surfcal", PACKAGE = "FIBOS")
   }
   .Fortran("main_intermediate02", as.integer(method),PACKAGE = "FIBOS")
-  if(system_arch["sysname"] == "Linux"){
+  if(system_arch["sysname"] == "Linux" || system_arch["sysname"] == "Darwin"){
     dyn.unload(system.file("libs", "FIBOS.so", package = "FIBOS"))
   } else if(system_arch["sysname"] == "Windows"){
     if(system_arch["machine"] == "x86-64"){

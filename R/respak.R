@@ -34,7 +34,7 @@ osp = function(file){
       file = "prot.srf"
     }
     system_arch_1 = Sys.info()
-    if(system_arch_1["sysname"] == "Linux"){
+    if(system_arch_1["sysname"] == "Linux"||system_arch_1["sysname"] == "Darwin"){
       dyn.load(system.file("libs", "FIBOS.so", package = "FIBOS"))
     } else if(system_arch_1["sysname"] == "Windows"){
       if(system_arch_1["machine"] == "x86-64"){
@@ -44,7 +44,7 @@ osp = function(file){
       }
     }
     .Fortran("respak", PACKAGE = "FIBOS")
-    if(system_arch_1["sysname"] == "Linux"){
+    if(system_arch_1["sysname"] == "Linux"||system_arch_1["sysname"] == "Darwin"){
       dyn.unload(system.file("libs", "FIBOS.so", package = "FIBOS"))
     } else if(system_arch_1["sysname"] == "Windows"){
       if(system_arch_1["machine"] == "x86-64"){
