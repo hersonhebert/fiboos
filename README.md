@@ -147,4 +147,4 @@ Output:
 Pattabiraman, N., Ward, K. B., & Fleming, P. J. (1995). Occluded molecular surface: Analysis of protein packing. Journal of Molecular Recognition, 8, 334–344. https://doi.org/doi.org/10.1002/jmr.300080603
 
 ## Status
-In Progress...
+In Progress.
