@@ -14,6 +14,9 @@
 #' @seealso [read_osp()]
 #' @seealso [osp()]
 #'
+#' @importFrom stringr str_sub
+#' @importFrom withr with_tempdir
+#'
 #' @author Carlos Henrique da Silveira (carlos.silveira@unifei.edu.br)
 #' @author Herson Hebert Mendes Soares (hersonhebert@hotmail.com)
 #' @author João Paulo Roquim Romanelli (joaoromanelli@unifei.edu.br)
@@ -22,7 +25,14 @@
 #' @export
 occluded_surface = function(pdb, method = "FIBOS"){
   remove_files()
-  create_folder()
+  source_path = getwd()
+  if(!dir.exists("fibos_files")){
+    dir.create("fibos_files")
+  }
+  withr::with_tempdir({
+  pdbname = getwd()
+  #pdbname = tempdir()
+  #create_folder(pdbname)
   meth = 0
   if(grepl(".pdb", pdb) ==  FALSE){
     arq_aux = paste(pdb,".pdb", sep = "")
@@ -51,8 +61,13 @@ occluded_surface = function(pdb, method = "FIBOS"){
   }
   execute(1, iresl, meth)
   remove_files()
+
   pdb_name = change_files(pdb)
+  arquivos = list.files(pdbname, full.names = TRUE)
+  source_path = paste0(source_path,"/fibos_files","")
+  file.copy(arquivos,source_path,overwrite = TRUE)
   return(read_prot(pdb_name))
+  })
 }
 
 remove_files = function(){

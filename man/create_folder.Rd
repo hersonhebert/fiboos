@@ -4,7 +4,7 @@
 \alias{create_folder}
 \title{Files Manipulating.}
 \usage{
-create_folder()
+create_folder(pdbname)
 }
 \description{
 Function for creating folders and manipulating files in the FIBOS system.

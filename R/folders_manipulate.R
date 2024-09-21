@@ -9,10 +9,12 @@
 #' @author João Paulo Roquim Romanelli (joaoromanelli@unifei.edu.br)
 #' @author Patrick Fleming (Pat.Fleming@jhu.edu)
 #'
-create_folder = function(){
-  if(!file.exists("fibos_files")){
-    dir.create("fibos_files")
+create_folder = function(pdbname){
+  pdbname = paste0(pdbname)
+  if(!file.exists(pdbname)){
+    dir.create(pdbname)
   }
+  setwd(pdbname)
 }
 
 change_files = function(pdb_name){
@@ -25,16 +27,12 @@ change_files = function(pdb_name){
   name_pdb = pdb_name
   name_raydist = pdb_name
   if(file.exists("prot.srf") == TRUE){
-    file.copy("prot.srf", "fibos_files/")
-    file.remove("prot.srf")
-    name_pdb = paste("fibos_files/prot_",pdb_name,".srf", sep = "")
-    file.rename("fibos_files/prot.srf", name_pdb)
+    name_pdb = paste("prot_",pdb_name,".srf", sep = "")
+    file.rename("prot.srf", name_pdb)
   }
   if(file.exists("raydist.lst") == TRUE){
-    file.copy("raydist.lst", "fibos_files/")
-    file.remove("raydist.lst")
-    name_raydist = paste("fibos_files/raydist_",pdb_name,".lst", sep = "")
-    file.rename("fibos_files/raydist.lst", name_raydist)
+    name_raydist = paste("raydist_",pdb_name,".lst", sep = "")
+    file.rename("raydist.lst", name_raydist)
   }
   return(name_pdb)
 }

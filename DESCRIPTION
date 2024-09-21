@@ -22,4 +22,5 @@ Imports:
     dplyr,
     readr,
     stringr,
-    tidyr
+    tidyr,
+    withr
